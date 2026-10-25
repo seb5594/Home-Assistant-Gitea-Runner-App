@@ -1,70 +1,23 @@
 configuration:
   gitea_url:
     name: Gitea-Adresse
-    description: Leer lassen, um die neben dieser App installierte Gitea-App zu verwenden. Sonst die Adresse deines Gitea eintragen, zum Beispiel http://homeassistant.local:3000 oder https://git.example.com.
-  registration:
-    name: Registrierung
-    description: Wie sich der Runner bei Gitea vorstellt. Wird einmal gebraucht; danach merkt sich der Runner seine Registrierung.
-    fields:
-      scope:
-        name: Bereich
-        description: Wer den Runner nutzen darf. "instance" bedient alle Repositories deines Gitea (braucht Administratorrechte), "user" die Repositories des Token-Besitzers, "organization" und "repository" nur das unter Ziel genannte.
-      target:
-        name: Ziel
-        description: Der Name der Organisation oder Besitzer/Repository, für die gleichnamigen Bereiche. Für "instance" und "user" leer lassen.
-      registration_token:
-        name: Registrierungstoken
-        description: Von der Runner-Seite in Gitea kopieren (die App-Seite hat den Link). Trage einen neuen ein und starte die App neu, um den Runner erneut zu registrieren. Nicht nötig, wenn ein Zugriffstoken gesetzt ist.
-      access_token:
-        name: Zugriffstoken
-        description: Optionale Alternative zum Registrierungstoken. Die App holt sich den Registrierungstoken selbst und zeigt außerdem, wie Gitea den Runner sieht. In Gitea unter Einstellungen > Anwendungen erstellen. Für den Bereich "instance" muss der Besitzer Administrator sein.
+    description: Adresse deines Gitea. Standard ist die Gitea-App von alexbelgium. Für eine andere App http://<Hostname>:3000, für ein Gitea an anderer Stelle zum Beispiel https://git.example.com.
+  registration_token:
+    name: Registrierungstoken
+    description: Von der Runner-Seite in Gitea kopieren (Website-Administration, eine Organisation oder ein Repository, siehe App-Seite). Wird einmal gebraucht; die Registrierung bleibt erhalten, du kannst das Feld danach leeren. Trage einen neuen Token ein und starte die App neu, um erneut zu registrieren.
   runner_name:
     name: Runner-Name
     description: Wie der Runner in Gitea heißt. Leer lassen für "home-assistant".
+  labels:
+    name: Labels
+    description: Die Namen, die ein Workflow bei "runs-on" einträgt, um auf diesem Runner zu laufen. Jobs laufen in dieser App.
   capacity:
     name: Parallele Jobs
     description: Wie viele Jobs gleichzeitig laufen. Jeder Job braucht Arbeitsspeicher und CPU; auf einem Raspberry Pi bei 1 bleiben.
-  job_image:
-    name: Größe der Job-Images
-    description: "slim: Node.js auf Debian, klein und schnell geladen (empfohlen). standard: viele Build-Werkzeuge enthalten, einige hundert Megabyte mehr. full: alles, was die Runner von GitHub haben, mehrere Gigabyte."
-  labels:
-    name: Labels für Jobs in Containern
-    description: Auf welche "runs-on"-Namen der Runner mit einem Container antwortet. Er braucht Docker-Zugriff, dafür den Schutzmodus im Info-Reiter dieser App ausschalten.
-  host_jobs:
-    name: Jobs auf Home Assistant selbst
-    description: Optional. Jobs mit dem Label "home-assistant" laufen direkt in dieser App, als root, neben deinen Home-Assistant-Dateien. Nur für Repositories, denen du vertraust.
-    fields:
-      enabled:
-        name: Host-Jobs aktivieren
-        description: Fügt das Label "home-assistant" hinzu. Die Ordner config, share, media, backup und ssl stehen diesen Jobs zur Verfügung.
-      home_assistant_api:
-        name: Home-Assistant-API für Host-Jobs
-        description: Gibt Host-Jobs den Supervisor-Token (SUPERVISOR_TOKEN) und die API-Adresse (HA_API_URL), damit ein Workflow Home Assistant prüfen oder neu laden kann. Jeder Workflow, der hier läuft, kann den Token lesen.
   advanced:
     name: Erweitert
-    description: Wird selten gebraucht.
+    description: Wird nur für ein selbstsigniertes Gitea-Zertifikat und zur Fehlersuche gebraucht.
     fields:
-      extra_labels:
-        name: Weitere Labels
-        description: "Weitere Labels in der Form name:docker://image, zum Beispiel python:docker://python:3.13-slim. name oder name:host läuft in dieser App und braucht Host-Jobs."
-      home_assistant_network:
-        name: Dem App-Netzwerk beitreten
-        description: An (empfohlen) lässt Jobs in Containern Gitea, Home Assistant und die anderen Apps über deren Namen erreichen.
-      docker_in_jobs:
-        name: Docker in Jobs
-        description: Gibt Jobs in Containern die Kontrolle über die Docker-Engine von Home Assistant OS, die das Bauen von Images braucht. Damit haben sie auch Kontrolle über alles auf diesem Host.
-      privileged_jobs:
-        name: Privilegierte Jobs
-        description: Startet Job-Container privilegiert. Nur für den seltenen Workflow, der das braucht.
-      job_timeout_minutes:
-        name: Job-Zeitlimit (Minuten)
-        description: Längste Laufzeit eines Jobs. Gitea hat eine eigene Grenze von drei Stunden.
-      cache:
-        name: Cache für Actions
-        description: Startet den Cache-Server, den actions/cache und ähnliche Actions nutzen. Schalte ihn aus, um etwas Arbeitsspeicher zu sparen, wenn kein Workflow ihn braucht.
-      ca_certificate:
-        name: CA-Zertifikatsdatei
-        description: Name einer PEM-Datei im Ordner /ssl, die das Zertifikat deines Gitea signiert hat, zum Beispiel my-ca.pem. Der saubere Weg, HTTPS mit einer eigenen Zertifizierungsstelle zu nutzen.
       ignore_certificate_errors:
         name: Zertifikatsfehler ignorieren
         description: Akzeptiert jedes Zertifikat von Gitea. Nur für ein Gitea im eigenen Netzwerk, dem du kein vertrauenswürdiges Zertifikat geben kannst.

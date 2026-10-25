@@ -15,19 +15,17 @@ source /usr/lib/gitea-runner/load.sh
 
 DAEMON_PID=""
 
-# The runner takes its jobs from Gitea. Jobs in host mode run as children of the runner and
-# inherit its environment, so the Supervisor token only stays when the user asked for it.
+# Jobs run as children of the runner and inherit what it has, so the runner gets less than
+# Home Assistant: a low CPU priority, and the highest OOM score, which makes the kernel stop a
+# runaway job before it touches Home Assistant when memory runs out.
 launch_daemon() {
   (
-    if [[ "$GR_HA_API" != "true" ]]; then
-      unset SUPERVISOR_TOKEN HASSIO_TOKEN
-    fi
-    if [[ -n "$GR_CA_CERT" ]]; then
-      export SSL_CERT_FILE="$GR_CA_CERT"
-    fi
     export HOME="$RUNNER_HOME"
     cd "$WORK_DIR" || exit 1
-    exec gitea-runner -c "$RUNNER_CONFIG" daemon
+    if ! echo 1000 >/proc/self/oom_score_adj 2>/dev/null; then
+      log_warning "Could not raise the OOM score of the runner."
+    fi
+    exec nice -n 15 gitea-runner -c "$RUNNER_CONFIG" daemon
   ) &
   DAEMON_PID=$!
   : >"${RUNTIME_DIR}/daemon"
@@ -38,24 +36,6 @@ stop_daemon() {
   if [[ -n "$DAEMON_PID" ]]; then
     kill "$DAEMON_PID" 2>/dev/null || true
     wait "$DAEMON_PID" 2>/dev/null || true
-  fi
-}
-
-log_summary() {
-  local labels
-  labels="$(jq -r '[.jobs.labels[] | select(.skipped | not) | .name] | join(", ")' "$RUNTIME_DIR/resolved.json")"
-  log_info "Labels: ${labels}. Capacity: ${GR_CAPACITY} job(s) at a time."
-  if [[ -n "$GR_NETWORK" ]]; then
-    log_info "Jobs in containers join the Docker network '${GR_NETWORK}': they reach Gitea, Home Assistant and the other apps by name."
-  fi
-  if [[ "$GR_HOST_ENABLED" == "true" ]]; then
-    log_warning "Host mode is on: jobs with the label '${HOST_LABEL}' run inside this app as root, with access to the Home Assistant folders. Only let repositories you trust use this runner."
-  fi
-  if [[ "$GR_DOCKER_IN_JOBS" == "true" || "$GR_PRIVILEGED" == "true" ]]; then
-    log_warning "Jobs in containers can control the Docker engine of Home Assistant OS (docker_in_jobs / privileged_jobs)."
-  fi
-  if [[ "$GR_DEBUG" == "true" ]]; then
-    log_warning "Debug logging is on. Switch it off after troubleshooting."
   fi
 }
 
@@ -79,7 +59,11 @@ main() {
   fi
 
   write_runner_config
-  log_summary
+  log_info "Labels: ${GR_LABELS[*]}. Capacity: ${GR_CAPACITY} job(s) at a time."
+  log_info "Jobs run as root inside this app: it has no access to Docker, the Supervisor or your files."
+  if [[ "$GR_DEBUG" == "true" ]]; then
+    log_warning "Debug logging is on. Switch it off after troubleshooting."
+  fi
   if ! ensure_registered; then
     refresh_status >/dev/null
     idle
