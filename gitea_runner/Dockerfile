@@ -10,7 +10,8 @@ FROM ${BUILD_FROM}
 
 # Jobs run inside this app, on what the image holds: the runner clones actions with git, and most
 # actions (actions/checkout, ...) are JavaScript, so they need node. openssh-client is for deploying
-# to other machines. busybox-extras brings the httpd of the app page, which Alpine's busybox lacks.
+# to other machines. util-linux-misc brings taskset, which busybox lacks and which keeps jobs on a
+# few CPU cores. busybox-extras brings the httpd of the app page, which Alpine's busybox lacks.
 RUN apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/git
     git=2.54.0-r0 \
@@ -18,6 +19,8 @@ RUN apk add --no-cache \
     nodejs=24.22.1-r0 \
     # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
     openssh-client-default=10.3_p1-r1 \
+    # renovate: datasource=repology depName=alpine_3_24/util-linux-misc
+    util-linux-misc=2.42.3-r1 \
     # renovate: datasource=repology depName=alpine_3_24/busybox-extras
     busybox-extras=1.37.0-r31 \
     # renovate: datasource=repology depName=alpine_3_24/curl
@@ -38,7 +41,7 @@ RUN chmod a+x /usr/lib/gitea-runner/*.sh /usr/share/gitea-runner/web/cgi-bin/* \
     && mkdir -p /run/gitea-runner \
     && ln -s /run/gitea-runner/status.json /usr/share/gitea-runner/web/status.json
 
-ARG BUILD_VERSION=1.0.0-dev4
+ARG BUILD_VERSION=1.0.0-dev5
 ARG BUILD_ARCH=amd64
 RUN echo "${BUILD_VERSION}" >/etc/gitea-runner/version
 LABEL io.hass.version="${BUILD_VERSION}" \

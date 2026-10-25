@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-dev5
+
+* The CPU limit works in the image: taskset comes from util-linux-misc, busybox does not have it. The pictures in the README point to the default branch.
+
 ## 1.0.0-dev4
 
 * New option “CPU cores for jobs” (default 1): all jobs together may only use that many cores, the rest
