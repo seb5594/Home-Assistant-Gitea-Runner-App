@@ -9,12 +9,13 @@
 
 <p align="center">
   <a href="https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fseb5594%2FHome-Assistant-Apps"><img src="https://img.shields.io/static/v1?label=Home%20Assistant&amp;message=Add%20app%20repository&amp;color=18BCF2&amp;logo=homeassistant&amp;logoColor=white&amp;style=for-the-badge" alt="Home Assistant" height="28"></a>
-  <a href="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App/releases/tag/v1.0.0-dev2"><img src="https://img.shields.io/static/v1?label=version&amp;message=1.0.0-dev2&amp;color=1877A5&amp;style=for-the-badge" alt="version" height="28"></a>
+  <a href="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App/releases"><img src="https://img.shields.io/static/v1?label=version&amp;message=1.0.0-dev3&amp;color=1877A5&amp;style=for-the-badge" alt="version" height="28"></a>
   <img src="https://img.shields.io/static/v1?label=image%20pulls&amp;message=8&amp;color=1877A5&amp;style=for-the-badge" alt="image pulls" height="28"><br>
   <img src="https://img.shields.io/static/v1?label=arch&amp;message=amd64%20%C2%B7%20aarch64&amp;color=157F71&amp;style=flat" alt="arch" height="20">
   <img src="https://img.shields.io/static/v1?label=stage&amp;message=experimental&amp;color=2F855A&amp;style=flat" alt="stage" height="20">
   <img src="https://img.shields.io/static/v1?label=ingress&amp;message=enabled&amp;color=7C3AED&amp;style=flat" alt="ingress" height="20">
   <img src="https://img.shields.io/static/v1?label=image%20size&amp;message=amd64%20132.8%20%C2%B7%20aarch64%20137.9%20MiB&amp;color=157F71&amp;style=flat" alt="image size" height="20"><br>
+  <a href="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App/stargazers"><img src="https://img.shields.io/github/stars/seb5594/Home-Assistant-Gitea-Runner-App?label=stars&amp;style=flat" alt="stars" height="20"></a>
   <a href="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App/issues"><img src="https://img.shields.io/github/issues/seb5594/Home-Assistant-Gitea-Runner-App?label=issues&amp;style=flat" alt="issues" height="20"></a>
   <img src="https://img.shields.io/static/v1?label=runtime%20tests&amp;message=12%20passed&amp;color=2F855A&amp;style=flat" alt="runtime tests" height="20">
   <a href="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/seb5594/Home-Assistant-Gitea-Runner-App/ci.yml?branch=main&amp;label=checks&amp;style=flat" alt="checks" height="20"></a>
@@ -28,7 +29,7 @@ Brings the [Gitea Runner](https://gitea.com/gitea/runner) to Home Assistant. Git
 need a runner to execute them; with this app your own Gitea builds, tests and deploys on your own
 hardware, without a cloud service.
 
-> **Pre-release.** The version is `1.0.0-dev2`: tested against a real Gitea, not yet on many
+> **Pre-release.** The versions are `dev` pre-releases: tested against a real Gitea, not yet on many
 > installations. Please report what you see.
 
 * **Minimal permissions.** No Docker, no Supervisor or Home Assistant API, no folders, no host network.
@@ -91,7 +92,7 @@ If my work helped you or turned out to be useful, show your appreciation with a 
 <!-- license:begin (generated from the license file) -->
 ## License
 
-[![license](https://img.shields.io/static/v1?label=license&message=Apache-2.0&color=5B6770&style=flat)](LICENSE)
+[![license](https://img.shields.io/static/v1?label=license&message=MIT&color=5B6770&style=flat)](LICENSE)
 
-Published under the [Apache License 2.0](LICENSE).
+Published under the [MIT License](LICENSE).
 <!-- license:end -->

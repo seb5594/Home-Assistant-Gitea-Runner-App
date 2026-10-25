@@ -193,7 +193,7 @@ for the build machine, `home-assistant` for this app), so both runners work side
 ## Working with other apps
 
 * **Gitea** (the app by alexbelgium): found at its default address, nothing to enter but the token.
-* **Gitea MCP Server**: Claude, ChatGPT and Assist can look at workflow runs and start them with the
+* **Gitea MCP-Server**: Claude, ChatGPT and Assist can look at workflow runs and start them with the
   tool group `actions`.
 * **Home Assistant Git Exporter**: every export is a push, so a workflow with `on: push` runs after
   every export, for example a YAML lint or a configuration check.

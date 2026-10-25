@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-dev3
+
+* The official Gitea logo with the name of the app as icon and logo. The license is MIT.
+
 ## 1.0.0-dev2
 
 * **Minimal and isolated.** No Docker, no Supervisor or Home Assistant API, no folders. The app only
