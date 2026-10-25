@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0-dev4
+
+* New option “CPU cores for jobs” (default 1): all jobs together may only use that many cores, the rest
+  stays free for Home Assistant. A job that compiles or installs no longer takes a whole small
+  device with it.
+
 ## 1.0.0-dev3
 
 * The official Gitea logo with the name of the app as icon and logo. The license is MIT.

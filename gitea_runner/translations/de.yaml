@@ -18,6 +18,9 @@ configuration:
     name: Erweitert
     description: Wird nur für ein selbstsigniertes Gitea-Zertifikat und zur Fehlersuche gebraucht.
     fields:
+      cpu_cores:
+        name: CPU-Kerne für Jobs
+        description: Wie viele CPU-Kerne alle Jobs zusammen nutzen dürfen. Der Rest bleibt für Home Assistant frei. Der Standard 1 hält Home Assistant ansprechbar, während ein Job kompiliert oder testet; bei einem Gerät mit einem Kern hat die Einstellung keine Wirkung.
       ignore_certificate_errors:
         name: Zertifikatsfehler ignorieren
         description: Akzeptiert jedes Zertifikat von Gitea. Nur für ein Gitea im eigenen Netzwerk, dem du kein vertrauenswürdiges Zertifikat geben kannst.

@@ -38,7 +38,7 @@ RUN chmod a+x /usr/lib/gitea-runner/*.sh /usr/share/gitea-runner/web/cgi-bin/* \
     && mkdir -p /run/gitea-runner \
     && ln -s /run/gitea-runner/status.json /usr/share/gitea-runner/web/status.json
 
-ARG BUILD_VERSION=1.0.0-dev3
+ARG BUILD_VERSION=1.0.0-dev4
 ARG BUILD_ARCH=amd64
 RUN echo "${BUILD_VERSION}" >/etc/gitea-runner/version
 LABEL io.hass.version="${BUILD_VERSION}" \

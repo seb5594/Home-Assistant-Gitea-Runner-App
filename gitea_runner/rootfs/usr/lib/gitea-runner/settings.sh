@@ -72,13 +72,34 @@ resolve_labels() {
   fi
 }
 
+# cpu_list <cores> [status file]
+# The CPUs jobs may use: the last <cores> of the CPUs this app is allowed to use, so the first
+# ones stay free for Home Assistant. Prints nothing when the jobs may use all of them.
+cpu_list() {
+  local wanted="$1" status="${2:-/proc/self/status}" allowed part low high cpu
+  local cpus=()
+  allowed="$(sed -n 's/^Cpus_allowed_list:[[:space:]]*//p' "$status")"
+  for part in ${allowed//,/ }; do
+    low="${part%-*}"
+    high="${part#*-}"
+    for ((cpu = low; cpu <= high; cpu++)); do
+      cpus+=("$cpu")
+    done
+  done
+  if ((wanted >= ${#cpus[@]})); then
+    return 0
+  fi
+  local IFS=,
+  printf '%s' "${cpus[*]: -wanted}"
+}
+
 write_resolved() {
   mkdir -p "$RUNTIME_DIR"
   jq -n \
     --arg hostname "$GR_APP_HOSTNAME" --arg version "$GR_APP_VERSION" \
     --arg url "$GR_GITEA_URL" --argjson insecure "$GR_IGNORE_TLS" --arg source "$GR_GITEA_SOURCE" \
     --arg name "$GR_NAME" --argjson has_token "$GR_HAS_TOKEN" \
-    --argjson capacity "$GR_CAPACITY" \
+    --argjson capacity "$GR_CAPACITY" --arg cpu_list "$GR_CPU_LIST" \
     --argjson labels "$(printf '%s\n' "${GR_LABELS[@]}" | jq -R . | jq -sc 'map(select(. != ""))')" \
     --argjson problems "$(printf '%s\n' "${GR_PROBLEMS[@]}" | jq -R . | jq -sc 'map(select(. != ""))')" \
     --argjson problem_details "$(printf '%s\n' "${GR_PROBLEM_DETAILS[@]}" | jq -sc 'map(select(. != null))')" '
@@ -86,7 +107,7 @@ write_resolved() {
       app: {hostname: $hostname, version: $version},
       gitea: {url: $url, insecure: $insecure, source: $source},
       registration: {name: $name, has_token: $has_token},
-      runner: {capacity: $capacity, labels: $labels},
+      runner: {capacity: $capacity, labels: $labels, cpu_list: $cpu_list},
       problems: $problems,
       problem_details: $problem_details
     }
@@ -103,6 +124,7 @@ resolve_settings() {
     GR_HAS_TOKEN=true
   fi
   GR_CAPACITY="$(option capacity 1)"
+  GR_CPU_LIST="$(cpu_list "$(option advanced.cpu_cores 1)")"
   GR_DEBUG="$(option advanced.debug_logging false)"
   GR_IGNORE_TLS="$(option advanced.ignore_certificate_errors false)"
 

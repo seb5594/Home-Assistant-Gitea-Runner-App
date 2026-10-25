@@ -16,8 +16,8 @@ source /usr/lib/gitea-runner/load.sh
 DAEMON_PID=""
 
 # Jobs run as children of the runner and inherit what it has, so the runner gets less than
-# Home Assistant: a low CPU priority, and the highest OOM score, which makes the kernel stop a
-# runaway job before it touches Home Assistant when memory runs out.
+# Home Assistant: a low CPU priority, only some of the CPUs, and the highest OOM score, which makes
+# the kernel stop a runaway job before it touches Home Assistant when memory runs out.
 launch_daemon() {
   (
     export HOME="$RUNNER_HOME"
@@ -25,7 +25,7 @@ launch_daemon() {
     if ! echo 1000 >/proc/self/oom_score_adj 2>/dev/null; then
       log_warning "Could not raise the OOM score of the runner."
     fi
-    exec nice -n 15 gitea-runner -c "$RUNNER_CONFIG" daemon
+    exec nice -n 15 ${GR_CPU_LIST:+taskset -c "$GR_CPU_LIST"} gitea-runner -c "$RUNNER_CONFIG" daemon
   ) &
   DAEMON_PID=$!
   : >"${RUNTIME_DIR}/daemon"
@@ -59,7 +59,7 @@ main() {
   fi
 
   write_runner_config
-  log_info "Labels: ${GR_LABELS[*]}. Capacity: ${GR_CAPACITY} job(s) at a time."
+  log_info "Labels: ${GR_LABELS[*]}. Capacity: ${GR_CAPACITY} job(s) at a time, on CPU ${GR_CPU_LIST:-all}."
   log_info "Jobs run as root inside this app: it has no access to Docker, the Supervisor or your files."
   if [[ "$GR_DEBUG" == "true" ]]; then
     log_warning "Debug logging is on. Switch it off after troubleshooting."

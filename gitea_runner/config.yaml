@@ -1,6 +1,6 @@
 name: Gitea Runner
 description: Runs the Actions workflows of your Gitea inside an isolated app, without access to your Home Assistant host.
-version: "1.0.0-dev3"
+version: "1.0.0-dev4"
 slug: gitea_runner
 stage: experimental
 init: false
@@ -25,6 +25,7 @@ options:
     - home-assistant
   capacity: 1
   advanced:
+    cpu_cores: 1
     ignore_certificate_errors: false
     debug_logging: false
 schema:
@@ -35,5 +36,6 @@ schema:
     - str
   capacity: int(1,4)
   advanced:
+    cpu_cores: int(1,16)
     ignore_certificate_errors: bool
     debug_logging: bool

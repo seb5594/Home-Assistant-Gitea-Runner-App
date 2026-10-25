@@ -18,6 +18,9 @@ configuration:
     name: Advanced
     description: Only needed for a self-signed Gitea certificate and for troubleshooting.
     fields:
+      cpu_cores:
+        name: CPU cores for jobs
+        description: How many CPU cores all jobs together may use. The rest stays free for Home Assistant. The default of 1 keeps Home Assistant responsive while a job compiles or tests; on a device with one core the setting has no effect.
       ignore_certificate_errors:
         name: Ignore certificate errors
         description: Accepts any certificate of Gitea. Only for a Gitea in your own network that you cannot give a trusted certificate.

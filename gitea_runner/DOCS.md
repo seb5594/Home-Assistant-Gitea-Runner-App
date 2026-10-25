@@ -70,6 +70,7 @@ token and restart the app. Changing the Gitea address or the runner name registe
 | `runner_name` | `home-assistant` | The name shown in Gitea. |
 | `labels` | `home-assistant` | The names for `runs-on`. All of them run jobs inside this app. Letters, digits, dots, dashes, underscores. |
 | `capacity` | 1 | Jobs at the same time (1 to 4). |
+| `advanced.cpu_cores` | 1 | How many CPU cores all jobs together may use (1 to 16). The rest stays free for Home Assistant. No effect on a device with one core. |
 | `advanced.ignore_certificate_errors` | off | Accept any certificate of Gitea. Only for a Gitea in your own network. |
 | `advanced.debug_logging` | off | Detailed log, including what the runner exchanges with Gitea. Switch it off after troubleshooting. |
 
@@ -152,9 +153,11 @@ What the app has:
 
 * **No Supervisor or Home Assistant API, no folders, no Docker, no privileges.** Jobs reach your
   network like every app does, so other apps and Home Assistant can be called by their names.
-* **Low priority.** The runner runs with a low CPU priority and the highest OOM score. Jobs inherit
-  both: when memory runs out, the kernel stops a job before Home Assistant. It cannot prevent a
-  device from slowing down when a job uses all memory, so keep `capacity` low on small devices.
+* **Low priority and few cores.** The runner runs with a low CPU priority, only on the number of CPU
+  cores you allow (`advanced.cpu_cores`, one by default) and with the highest OOM score. Jobs inherit
+  all three: Home Assistant keeps its cores, and when memory runs out, the kernel stops a job before
+  Home Assistant. It cannot prevent a device from slowing down when a job uses all memory, so keep
+  `capacity` low on small devices.
 * **No Supervisor token in jobs.** Workflows get secrets from Gitea, which you control per
   repository.
 
@@ -218,6 +221,7 @@ messages.
 | *Gitea does not accept this registration token* | The token belongs to another Gitea, or was reset. Copy a fresh one. |
 | *Gitea does not answer: the connection was refused* | Start the Gitea app, or check `gitea_url`. The runner keeps trying by itself. |
 | *the TLS certificate is not trusted* | Use the `http://` address of the Gitea app inside Home Assistant, or switch on `ignore_certificate_errors` for a Gitea in your own network. |
+| The CPU usage of the app is high | A job is running: compiling, testing and installing use every core they may. The app page shows “N of M jobs are running”, Gitea lists the run under *Actions*; cancel it there to stop the load. An idle runner uses next to nothing. Lower `advanced.cpu_cores` or `capacity` to leave Home Assistant more room. |
 | The runner is registered but a workflow never starts | The `runs-on` label of the workflow must be one of the runner's labels. Actions must be enabled for the repository. The registration scope must include the repository. |
 | *Gitea shows the runner as offline* | It takes about a minute to notice a new runner. If it stays offline, the log tells why. |
 | A step fails with "command not found" | The image is minimal. Install the program with `apk add`, see [Workflows](#workflows). |

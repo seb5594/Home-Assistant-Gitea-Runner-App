@@ -161,6 +161,24 @@ settings '{"labels": []}'
 expect_equal "no label" "no_labels" "$(resolved '.problem_details[0].code')"
 pass "names and labels are checked"
 
+# ---- CPUs for the jobs ---------------------------------------------------------------------------
+
+cpus="$fixture/cpus"
+printf 'Name:\tx\nCpus_allowed_list:\t0-7\n' >"$cpus"
+expect_equal "one of eight CPUs" "7" "$(cpu_list 1 "$cpus")"
+expect_equal "three of eight CPUs" "5,6,7" "$(cpu_list 3 "$cpus")"
+expect_equal "all CPUs when asked for all" "" "$(cpu_list 8 "$cpus")"
+expect_equal "all CPUs when asked for more" "" "$(cpu_list 16 "$cpus")"
+printf 'Cpus_allowed_list:\t0,2-3\n' >"$cpus"
+expect_equal "ranges and single CPUs" "2,3" "$(cpu_list 2 "$cpus")"
+printf 'Cpus_allowed_list:\t0\n' >"$cpus"
+expect_equal "a single CPU is left alone" "" "$(cpu_list 1 "$cpus")"
+printf 'Name:\tx\n' >"$cpus"
+expect_equal "no information, no limit" "" "$(cpu_list 1 "$cpus")"
+command -v taskset >/dev/null || fail "taskset is missing, the CPU limit would not work"
+taskset -c "$(taskset -cp $$ | sed 's/.*: //; s/[-,].*//')" true || fail "taskset cannot set the CPUs"
+pass "jobs are limited to the last CPUs and taskset works"
+
 # ---- runner configuration, read by the real binary ----------------------------------------------
 
 settings '{"capacity": 3, "labels": ["home-assistant", "ci"], "advanced": {"debug_logging": true}}'
