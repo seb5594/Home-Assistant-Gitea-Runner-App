@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-dev6
+
+* Dependencies: update alpine base and packages (base image 3.24-2026.10.1, curl 8.23.0-r0).
+
 ## 1.0.0-dev5
 
 * The CPU limit works in the image: taskset comes from util-linux-misc, busybox does not have it. The pictures in the README point to the default branch.
