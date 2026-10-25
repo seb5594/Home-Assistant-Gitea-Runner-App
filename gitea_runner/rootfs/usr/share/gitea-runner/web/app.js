@@ -11,26 +11,26 @@ const TEXT = {
     checkedAt: 'Last checked {0}',
     preRelease: 'Pre-release {0}',
     problems: 'Needs attention',
-    notices: 'Good to know',
-    runner: 'Runner',
-    noGitea: 'No Gitea configured',
-    noGiteaDetail: 'Install the Gitea app, or enter the address of your Gitea in the app configuration.',
+    openConfig: 'Open app configuration',
+
+    tab_overview: 'Overview',
+    tab_setup: 'Set up',
+    tab_workflows: 'Workflows',
+    tab_limits: 'Safety and limits',
+
+    overviewIntro: 'Gitea Actions runs workflows (build, test, deploy) when you push to a repository. Gitea only schedules them; a runner executes them. This app is such a runner. It runs the jobs inside the app, isolated from the rest of Home Assistant.',
+    status: 'Status',
     giteaOk: 'Gitea {0} is reachable',
-    giteaApp: '{0} (found the Gitea app automatically)',
+    giteaOkNoVersion: 'Gitea is reachable',
+    giteaDefault: '{0} (the Gitea app by alexbelgium, the default)',
     giteaUrl: '{0} (address from the app configuration)',
     giteaBad: 'Gitea does not answer',
-    tokenOk: 'The access token works',
-    tokenOkDetail: 'Signed in as {0}.',
-    tokenBad: 'The access token does not work',
-    scopeInstance: 'for the whole Gitea',
-    scopeUser: 'for the user of the access token',
-    scopeOrganization: 'for the organization {0}',
-    scopeRepository: 'for the repository {0}',
     regRegistered: 'The runner “{0}” is registered',
+    regRegisteredDetail: 'Gitea shows it under Actions → Runners. Once registered you can remove the token from the configuration.',
     regStarting: 'Registration is being prepared…',
     regWaiting: 'Waiting for Gitea to answer',
     regNeeds: 'A registration token is needed',
-    regNeedsDetail: 'Open the runners page of Gitea, copy the registration token and enter it as “Registration token” in the app configuration. Or enter an access token, then the app fetches the registration token itself. Restart the app afterwards.',
+    regNeedsDetail: 'Copy it from Gitea (see the tab “Set up”) and enter it as “Registration token” in the app configuration. Restart the app afterwards.',
     regRejected: 'Gitea refused the registration',
     regFailed: 'The runner could not be registered',
     runnerUp: 'The runner is connected and waits for jobs',
@@ -38,93 +38,65 @@ const TEXT = {
     runnerBusy: '{0} of {1} jobs are running',
     runnerNotReady: 'The runner is starting or cannot reach Gitea',
     runnerDown: 'The runner is not running',
-    remoteOnline: 'Gitea shows the runner as online',
-    remoteBusy: 'Gitea shows the runner as online and busy',
-    remoteOffline: 'Gitea shows the runner as offline',
-    remoteOfflineDetail: 'It can take a minute until Gitea notices a runner that just started.',
-    remoteUnknown: 'Gitea’s view of the runner is not available',
+    labelsTitle: 'Labels',
+    labelsDetail: 'Put one of these in “runs-on” of a workflow to run it here: {0}.',
     jobsDone: 'Jobs since the app started',
     jobsDoneDetail: '{0} succeeded, {1} failed or cancelled.',
-    runnersPage: 'Open the runners page of Gitea',
-    openConfig: 'Open app configuration',
-    containers: 'Jobs in containers',
-    dockerOk: 'Docker engine {0} is reachable',
-    dockerOkDetail: 'Jobs run as containers next to your apps and are removed afterwards.',
-    dockerBad: 'The app has no access to Docker',
-    dockerBadDetail: 'Jobs in containers cannot run.',
-    noContainerLabels: 'No labels for jobs in containers',
-    noContainerLabelsDetail: 'Choose labels under “labels” in the app configuration to run jobs in containers.',
-    labelsHeading: 'Labels, to be used in “runs-on”',
-    labelSkipped: 'left out: no Docker',
-    imageSlim: 'Slim images: Node.js on Debian, small and quick to download. Good for most workflows.',
-    imageStandard: 'Standard images: many build tools included, several hundred megabytes more.',
-    imageFull: 'Full images: everything GitHub’s runners have, several gigabytes. Use them only with enough disk space.',
-    networkJoined: 'Jobs join the network “{0}”',
-    networkJoinedDetail: 'They reach Gitea, Home Assistant and the other apps by name.',
-    networkOff: 'Jobs run on a network of their own',
-    networkOffDetail: 'They cannot reach the other apps by name. “Join the app network” in the advanced options changes that.',
-    addHost: 'The name {0} leads to the Gitea app',
-    addHostDetail: 'Gitea announces itself under this name, which only Home Assistant’s own network knows. Jobs get it mapped, so they can clone your repositories.',
-    dockerInJobs: 'Jobs may control the Docker engine',
-    dockerInJobsDetail: 'This is what building images in a job needs, and it gives the job full control over Home Assistant OS. Use it only for repositories you trust.',
-    privileged: 'Jobs run privileged',
-    privilegedDetail: 'Same warning as above, even stronger.',
-    host: 'Jobs on Home Assistant itself (host mode)',
-    hostOff: 'Off',
-    hostOffDetail: 'With “host_jobs” switched on, jobs with the label “home-assistant” run inside this app, next to your Home Assistant files. That is how a workflow can change your configuration or reload Home Assistant.',
-    hostOn: 'On, label “{0}”',
-    hostOnDetail: 'Jobs run as root inside this app. Only let repositories you trust use this runner, for example by registering it for one repository or organization.',
-    hostFolders: 'Folders the jobs can use',
-    hostFoldersDetail: '{0}. Backup and ssl are read-only.',
-    hostApiOn: 'Jobs can use the Home Assistant API',
-    hostApiOnDetail: 'The variables SUPERVISOR_TOKEN and HA_API_URL are set for them. The token is visible to every workflow that runs here.',
-    hostApiOff: 'Jobs cannot use the Home Assistant API',
-    hostApiOffDetail: 'Switch on “home_assistant_api” under “host_jobs” if a workflow should check or reload Home Assistant.',
-    tryIt: 'Try it',
-    tryIntro: 'Create this file in a repository, push it, and open the “Actions” tab. Actions must be enabled for the repository (Settings → Repository).',
-    tryHello: '.gitea/workflows/hello.yaml',
-    tryLint: '.gitea/workflows/yamllint.yaml, checks the YAML files of a repository',
-    tryReload: '.gitea/workflows/reload.yaml, checks the running Home Assistant and reloads it',
-    companions: 'Works well with',
-    companionState: 'state: {0}',
-    tipMcp: 'Claude and Assist can look at your workflow runs and start them through the toolset “actions”. Leave it in the toolsets of the MCP app.',
-    tipGitExporter: 'Every export is a push, so a workflow with “on: push” starts by itself after each export.',
-    tipRsyncLocal: 'Files a host job writes to /share are copied to your USB drive with the rest of your data.',
+    isolationTitle: 'Isolated by design',
+    isolationText: 'The app has no access to Docker, to the Supervisor or to your Home Assistant files, and it does not run with extra privileges. Jobs run as root inside the app, with a low priority, and are stopped first when memory runs short. Read “Safety and limits” before you register the runner for repositories you do not control.',
+
+    setupTitle: 'Register the runner',
+    setupIntro: 'Needed once. The registration is kept, also in backups.',
+    setupStep1: 'Switch on Actions',
+    setupStep1Text: 'Current Gitea versions have Actions on. Open a repository, go to Settings → Repository and enable “Actions”. If the section is missing, Actions are switched off for the whole Gitea (setting ENABLED in the [actions] section of app.ini).',
+    setupStep2: 'Copy a registration token',
+    setupStep2Text: 'In Gitea open the runners page and create a new runner, then copy the token. Where you open it decides who may use the runner: Site administration → Actions → Runners for every repository, an organization’s Settings → Actions → Runners for its repositories, a repository’s Settings → Actions → Runners for that repository only.',
+    setupStep3: 'Enter it here',
+    setupStep3Text: 'Paste the token as “Registration token” in the app configuration and restart the app. If your Gitea is not the Gitea app by alexbelgium, change “Gitea address” as well.',
+    setupStep4: 'Check',
+    setupStep4Text: 'This page shows the runner as registered and connected, and Gitea lists it as online after a short while. Then remove the token from the configuration: it is not needed any more. To register again (another Gitea, another scope), enter a new token and restart.',
+    addresses: 'Gitea address in use',
+    openConfig2: 'Open app configuration',
+
+    workflowsTitle: 'Workflows',
+    workflowsIntro: 'Workflows are YAML files in the folder .gitea/workflows of a repository. “runs-on” picks the runner by label. These examples use the label {0}.',
+    wfHello: '.gitea/workflows/hello.yaml, the smallest useful workflow',
+    wfTools: '.gitea/workflows/tools.yaml, installs what a job needs (the image is Alpine Linux and jobs run as root)',
+    wfReload: '.gitea/workflows/reload.yaml, checks and reloads Home Assistant through its API',
+    wfReloadHint: 'Create a long-lived access token in your Home Assistant profile (Security) and save it in Gitea as the secret HA_TOKEN (repository Settings → Actions → Secrets). Only workflows of that repository can use it. “homeassistant” is the address of Home Assistant inside its internal network.',
+    wfDeploy: '.gitea/workflows/deploy.yaml, copies files to another machine over SSH',
+    wfDeployHint: 'Create a key pair, put the public key on the target and save the private key as the secret DEPLOY_KEY. The host and path are examples.',
+
+    limitsTitle: 'Safety and limits',
+    limitsWhy: 'Why no Docker?',
+    limitsWhyText: 'Jobs in containers need access to the Docker engine of Home Assistant OS, and whoever may use that engine controls the whole host. A workflow that compiles firmware with several parallel compilers then takes down Home Assistant itself, which has happened. This app therefore runs jobs inside its own container, where memory shortage and runaway jobs hit the app and not the host. The price is that there are no container jobs and no “docker build”.',
+    limitsHas: 'What the app has',
+    limitsHas1: 'A low CPU priority and the highest OOM score: when memory runs out, the kernel stops a job before Home Assistant.',
+    limitsHas2: 'No Supervisor or Home Assistant API, no folders, no Docker, no privileges. Jobs reach your network like every app does, so other apps and Home Assistant can be called by their names.',
+    limitsHas3: 'One job at a time by default. Raise “Parallel jobs” only if the device has memory to spare.',
+    limitsLimits: 'What it cannot do',
+    limitsLimit1: 'Alpine Linux uses musl instead of glibc. Programs that only exist for glibc, such as the toolchains of PlatformIO and ESPHome or the downloads of setup-node and setup-python, do not run. Install what you need with “apk add” (see the Workflows tab), or run such builds elsewhere.',
+    limitsLimit2: 'No “docker build”, no service containers, no “container:” in a workflow.',
+    limitsLimit3: 'Heavy builds belong on a separate machine. You can run the official runner there and register it with the same Gitea; this app then stays for light jobs next to Home Assistant.',
+    limitsTrust: 'Who may use it',
+    limitsTrustText: 'Jobs run arbitrary commands as root inside the app. Register the runner only for repositories and organizations you trust (see “Set up”, step 2), and be careful with workflows in pull requests from strangers.',
+
     reason_host_unknown: 'the host name is unknown',
     reason_refused: 'the connection was refused (is the app started?)',
     reason_timeout: 'the request timed out',
     reason_tls: 'the TLS certificate is not trusted (see the advanced options)',
     reason_failed: 'the connection failed (curl error {rc})',
     m_no_answer: 'Gitea does not answer: {reason}.',
-    m_login_required: 'Gitea requires a login for everything; the access token decides what the app may check.',
     m_not_gitea: '{url} answers, but it does not look like Gitea (HTTP {http}). Check the address.',
-    m_token_rejected: 'Gitea does not accept this access token.',
-    m_token_http: 'The token could not be checked (HTTP {http}).',
-    m_token_unreachable: 'The token could not be checked because Gitea is not reachable.',
     m_registered: 'The runner is registered.',
     m_waiting: 'Gitea does not answer yet. The app tries again by itself.',
-    m_needs_credentials: 'Enter a registration token (or an access token) in the app configuration.',
+    m_needs_credentials: 'Enter a registration token in the app configuration.',
     m_registration_token_rejected: 'Gitea does not accept this registration token. Copy a fresh one from the runners page of Gitea.',
-    m_access_token_rejected: 'Gitea does not accept the access token.',
-    m_access_token_scope: 'The access token may not create runner registration tokens for this scope. It needs administrator rights, or the write permission for organizations or repositories.',
-    m_scope_not_found: 'Gitea has nothing to register runners for this scope ({scope} “{target}”): check “target” and that Actions are enabled in Gitea.',
-    m_registration_http: 'Gitea answered the request for a registration token with HTTP {http}.',
     m_register_failed: 'The runner could not be registered: {detail}',
-    m_docker_no_socket: 'The Docker socket is not available. Switch off “Protection mode” on the Info tab of this app and restart it.',
-    m_docker_no_answer: 'The Docker engine does not answer on its socket.',
-    m_token_scope: 'Gitea does not let this access token look at runners; it needs administrator rights or the matching read permission.',
-    m_runner_gone: 'Gitea does not know this runner (any more). With an access token the app registers it again at the next start.',
-    m_runner_http: 'Gitea answered the runner check with HTTP {http}.',
-    m_no_gitea: 'No Gitea was found. Install the Gitea app, or enter the address of your Gitea in “Gitea address”.',
-    m_bad_gitea_url: 'The Gitea address “{url}” is not a web address. Use the form http://homeassistant.local:3000.',
-    m_ca_missing: 'The certificate file “{name}” was not found in the /ssl folder.',
-    m_bad_target: 'The scope “{scope}” needs a matching “target” (organization name, or owner/repository); “{target}” does not fit.',
+    m_bad_gitea_url: 'The Gitea address “{url}” is not a web address. Use the form http://db21ed7f-gitea:3000.',
     m_bad_runner_name: 'The runner name “{name}” may only hold letters, digits, blanks, dots, dashes and underscores.',
-    m_bad_label: 'The label “{label}” is not valid. Use name, name:host or name:docker://image.',
-    m_no_labels: 'There is nothing the runner could run: switch on “host_jobs”, or give the app Docker access and choose labels.',
-    m_host_label_ignored: 'The label “{label}” runs jobs inside this app and is ignored while “host_jobs” is switched off.',
-    m_docker_unavailable: 'The Docker engine is not available, so {count} label(s) for jobs in containers are left out. Switch off “Protection mode” of this app and restart it.',
-    m_network_missing: 'The Docker network “{network}” does not exist; jobs run on a network of their own.',
+    m_bad_label: 'The label “{label}” is not valid. Use letters, digits, dots, dashes and underscores.',
+    m_no_labels: 'There is no label, so no workflow could use this runner. Add at least one, for example home-assistant.',
   },
   de: {
     recheck: 'Erneut prüfen',
@@ -135,26 +107,26 @@ const TEXT = {
     checkedAt: 'Zuletzt geprüft {0}',
     preRelease: 'Vorabversion {0}',
     problems: 'Das braucht Aufmerksamkeit',
-    notices: 'Gut zu wissen',
-    runner: 'Runner',
-    noGitea: 'Kein Gitea eingerichtet',
-    noGiteaDetail: 'Installiere die Gitea-App oder trage die Adresse deines Gitea in der App-Konfiguration ein.',
+    openConfig: 'App-Konfiguration öffnen',
+
+    tab_overview: 'Übersicht',
+    tab_setup: 'Einrichten',
+    tab_workflows: 'Workflows',
+    tab_limits: 'Sicherheit und Grenzen',
+
+    overviewIntro: 'Gitea Actions führt Workflows (bauen, testen, ausliefern) aus, wenn du in ein Repository pushst. Gitea plant sie nur; ein Runner führt sie aus. Diese App ist so ein Runner. Sie führt die Jobs innerhalb der App aus, abgeschottet vom Rest von Home Assistant.',
+    status: 'Status',
     giteaOk: 'Gitea {0} ist erreichbar',
-    giteaApp: '{0} (Gitea-App automatisch gefunden)',
+    giteaOkNoVersion: 'Gitea ist erreichbar',
+    giteaDefault: '{0} (die Gitea-App von alexbelgium, der Standard)',
     giteaUrl: '{0} (Adresse aus der App-Konfiguration)',
     giteaBad: 'Gitea antwortet nicht',
-    tokenOk: 'Der Zugriffstoken funktioniert',
-    tokenOkDetail: 'Angemeldet als {0}.',
-    tokenBad: 'Der Zugriffstoken funktioniert nicht',
-    scopeInstance: 'für das ganze Gitea',
-    scopeUser: 'für den Benutzer des Zugriffstokens',
-    scopeOrganization: 'für die Organisation {0}',
-    scopeRepository: 'für das Repository {0}',
     regRegistered: 'Der Runner „{0}“ ist registriert',
+    regRegisteredDetail: 'Gitea zeigt ihn unter Actions → Runner. Nach der Registrierung kannst du den Token aus der Konfiguration entfernen.',
     regStarting: 'Die Registrierung wird vorbereitet…',
     regWaiting: 'Warte darauf, dass Gitea antwortet',
     regNeeds: 'Ein Registrierungstoken wird gebraucht',
-    regNeedsDetail: 'Öffne die Runner-Seite von Gitea, kopiere den Registrierungstoken und trage ihn in der App-Konfiguration als „Registrierungstoken“ ein. Oder trage einen Zugriffstoken ein, dann holt die App den Registrierungstoken selbst. Starte die App danach neu.',
+    regNeedsDetail: 'Kopiere ihn aus Gitea (siehe Reiter „Einrichten“) und trage ihn in der App-Konfiguration als „Registrierungstoken“ ein. Starte die App danach neu.',
     regRejected: 'Gitea hat die Registrierung abgelehnt',
     regFailed: 'Der Runner konnte nicht registriert werden',
     runnerUp: 'Der Runner ist verbunden und wartet auf Jobs',
@@ -162,93 +134,65 @@ const TEXT = {
     runnerBusy: '{0} von {1} Jobs laufen',
     runnerNotReady: 'Der Runner startet oder erreicht Gitea nicht',
     runnerDown: 'Der Runner läuft nicht',
-    remoteOnline: 'Gitea zeigt den Runner als online',
-    remoteBusy: 'Gitea zeigt den Runner als online und beschäftigt',
-    remoteOffline: 'Gitea zeigt den Runner als offline',
-    remoteOfflineDetail: 'Es kann eine Minute dauern, bis Gitea einen frisch gestarteten Runner bemerkt.',
-    remoteUnknown: 'Die Sicht von Gitea auf den Runner ist nicht verfügbar',
+    labelsTitle: 'Labels',
+    labelsDetail: 'Trage eines davon bei „runs-on“ eines Workflows ein, damit er hier läuft: {0}.',
     jobsDone: 'Jobs seit dem Start der App',
     jobsDoneDetail: '{0} erfolgreich, {1} fehlgeschlagen oder abgebrochen.',
-    runnersPage: 'Runner-Seite von Gitea öffnen',
-    openConfig: 'App-Konfiguration öffnen',
-    containers: 'Jobs in Containern',
-    dockerOk: 'Docker-Engine {0} ist erreichbar',
-    dockerOkDetail: 'Jobs laufen als Container neben deinen Apps und werden danach entfernt.',
-    dockerBad: 'Die App hat keinen Zugriff auf Docker',
-    dockerBadDetail: 'Jobs in Containern können nicht laufen.',
-    noContainerLabels: 'Keine Labels für Jobs in Containern',
-    noContainerLabelsDetail: 'Wähle unter „labels“ in der App-Konfiguration Labels, um Jobs in Containern auszuführen.',
-    labelsHeading: 'Labels, für „runs-on“',
-    labelSkipped: 'ausgelassen: kein Docker',
-    imageSlim: 'Schlanke Images: Node.js auf Debian, klein und schnell geladen. Genügt für die meisten Workflows.',
-    imageStandard: 'Standard-Images: viele Build-Werkzeuge enthalten, einige hundert Megabyte mehr.',
-    imageFull: 'Volle Images: alles, was die Runner von GitHub haben, mehrere Gigabyte. Nur mit genug Speicherplatz verwenden.',
-    networkJoined: 'Jobs treten dem Netzwerk „{0}“ bei',
-    networkJoinedDetail: 'Sie erreichen Gitea, Home Assistant und die anderen Apps über deren Namen.',
-    networkOff: 'Jobs laufen in einem eigenen Netzwerk',
-    networkOffDetail: 'Sie erreichen die anderen Apps nicht über deren Namen. „Dem App-Netzwerk beitreten“ in den erweiterten Optionen ändert das.',
-    addHost: 'Der Name {0} führt zur Gitea-App',
-    addHostDetail: 'Gitea nennt sich unter diesem Namen, den nur das eigene Netzwerk von Home Assistant kennt. Die Jobs bekommen ihn zugeordnet und können so deine Repositories klonen.',
-    dockerInJobs: 'Jobs dürfen die Docker-Engine steuern',
-    dockerInJobsDetail: 'Das braucht man, um in einem Job Images zu bauen, und es gibt dem Job volle Kontrolle über Home Assistant OS. Nutze es nur für Repositories, denen du vertraust.',
-    privileged: 'Jobs laufen privilegiert',
-    privilegedDetail: 'Dieselbe Warnung wie oben, noch stärker.',
-    host: 'Jobs auf Home Assistant selbst (Host-Modus)',
-    hostOff: 'Aus',
-    hostOffDetail: 'Ist „host_jobs“ eingeschaltet, laufen Jobs mit dem Label „home-assistant“ in dieser App, direkt neben deinen Home-Assistant-Dateien. So kann ein Workflow deine Konfiguration ändern oder Home Assistant neu laden.',
-    hostOn: 'An, Label „{0}“',
-    hostOnDetail: 'Jobs laufen als root in dieser App. Lass nur Repositories, denen du vertraust, diesen Runner nutzen, zum Beispiel indem du ihn nur für ein Repository oder eine Organisation registrierst.',
-    hostFolders: 'Ordner, die die Jobs nutzen können',
-    hostFoldersDetail: '{0}. Backup und ssl sind schreibgeschützt.',
-    hostApiOn: 'Jobs können die Home-Assistant-API nutzen',
-    hostApiOnDetail: 'Für sie sind die Variablen SUPERVISOR_TOKEN und HA_API_URL gesetzt. Der Token ist für jeden Workflow sichtbar, der hier läuft.',
-    hostApiOff: 'Jobs können die Home-Assistant-API nicht nutzen',
-    hostApiOffDetail: 'Schalte „home_assistant_api“ unter „host_jobs“ ein, wenn ein Workflow Home Assistant prüfen oder neu laden soll.',
-    tryIt: 'Ausprobieren',
-    tryIntro: 'Lege diese Datei in einem Repository an, pushe sie und öffne den Reiter „Actions“. Actions müssen für das Repository aktiviert sein (Einstellungen → Repository).',
-    tryHello: '.gitea/workflows/hello.yaml',
-    tryLint: '.gitea/workflows/yamllint.yaml, prüft die YAML-Dateien eines Repositorys',
-    tryReload: '.gitea/workflows/reload.yaml, prüft das laufende Home Assistant und lädt es neu',
-    companions: 'Passt gut zu',
-    companionState: 'Status: {0}',
-    tipMcp: 'Claude und Assist können deine Workflow-Läufe ansehen und starten, über die Werkzeuggruppe „actions“. Lass sie in den Werkzeuggruppen der MCP-App.',
-    tipGitExporter: 'Jeder Export ist ein Push, ein Workflow mit „on: push“ startet daher nach jedem Export von selbst.',
-    tipRsyncLocal: 'Dateien, die ein Host-Job nach /share schreibt, werden mit deinen übrigen Daten auf dein USB-Laufwerk kopiert.',
+    isolationTitle: 'Bewusst abgeschottet',
+    isolationText: 'Die App hat keinen Zugriff auf Docker, auf den Supervisor oder auf deine Home-Assistant-Dateien und läuft ohne zusätzliche Rechte. Jobs laufen als root innerhalb der App, mit niedriger Priorität, und werden zuerst beendet, wenn der Speicher knapp wird. Lies „Sicherheit und Grenzen“, bevor du den Runner für Repositories registrierst, die du nicht kontrollierst.',
+
+    setupTitle: 'Runner registrieren',
+    setupIntro: 'Wird einmal gebraucht. Die Registrierung bleibt erhalten, auch in Backups.',
+    setupStep1: 'Actions einschalten',
+    setupStep1Text: 'Aktuelle Gitea-Versionen haben Actions eingeschaltet. Öffne ein Repository, gehe zu Einstellungen → Repository und aktiviere „Actions“. Fehlt der Abschnitt, sind Actions für das ganze Gitea abgeschaltet (Einstellung ENABLED im Abschnitt [actions] der app.ini).',
+    setupStep2: 'Registrierungstoken kopieren',
+    setupStep2Text: 'Öffne in Gitea die Runner-Seite und lege einen neuen Runner an, dann kopiere den Token. Wo du sie öffnest, bestimmt, wer den Runner nutzen darf: Website-Administration → Actions → Runner für alle Repositories, Einstellungen → Actions → Runner einer Organisation für deren Repositories, Einstellungen → Actions → Runner eines Repositorys nur für dieses.',
+    setupStep3: 'Hier eintragen',
+    setupStep3Text: 'Füge den Token als „Registrierungstoken“ in der App-Konfiguration ein und starte die App neu. Ist dein Gitea nicht die Gitea-App von alexbelgium, ändere auch die „Gitea-Adresse“.',
+    setupStep4: 'Prüfen',
+    setupStep4Text: 'Diese Seite zeigt den Runner als registriert und verbunden, und Gitea führt ihn nach kurzer Zeit als online. Entferne danach den Token aus der Konfiguration: Er wird nicht mehr gebraucht. Für eine neue Registrierung (anderes Gitea, anderer Bereich) trage einen neuen Token ein und starte neu.',
+    addresses: 'Verwendete Gitea-Adresse',
+    openConfig2: 'App-Konfiguration öffnen',
+
+    workflowsTitle: 'Workflows',
+    workflowsIntro: 'Workflows sind YAML-Dateien im Ordner .gitea/workflows eines Repositorys. „runs-on“ wählt den Runner über das Label. Diese Beispiele nutzen das Label {0}.',
+    wfHello: '.gitea/workflows/hello.yaml, der kleinste nützliche Workflow',
+    wfTools: '.gitea/workflows/tools.yaml, installiert, was ein Job braucht (das Image ist Alpine Linux und Jobs laufen als root)',
+    wfReload: '.gitea/workflows/reload.yaml, prüft das laufende Home Assistant und lädt es über die API neu',
+    wfReloadHint: 'Erstelle in deinem Home-Assistant-Profil (Sicherheit) einen langlebigen Zugriffstoken und speichere ihn in Gitea als Secret HA_TOKEN (Repository Einstellungen → Actions → Secrets). Nur Workflows dieses Repositorys können ihn nutzen. „homeassistant“ ist die Adresse von Home Assistant im internen Netzwerk.',
+    wfDeploy: '.gitea/workflows/deploy.yaml, kopiert Dateien per SSH auf einen anderen Rechner',
+    wfDeployHint: 'Erzeuge ein Schlüsselpaar, lege den öffentlichen Schlüssel auf dem Ziel ab und speichere den privaten als Secret DEPLOY_KEY. Host und Pfad sind Beispiele.',
+
+    limitsTitle: 'Sicherheit und Grenzen',
+    limitsWhy: 'Warum kein Docker?',
+    limitsWhyText: 'Jobs in Containern brauchen Zugriff auf die Docker-Engine von Home Assistant OS, und wer diese Engine nutzen darf, kontrolliert den ganzen Host. Ein Workflow, der Firmware mit mehreren parallelen Compilern baut, reißt dann Home Assistant selbst mit, das ist schon passiert. Diese App führt Jobs deshalb in ihrem eigenen Container aus: Speichermangel und außer Kontrolle geratene Jobs treffen die App und nicht den Host. Der Preis: keine Container-Jobs und kein „docker build“.',
+    limitsHas: 'Was die App hat',
+    limitsHas1: 'Eine niedrige CPU-Priorität und den höchsten OOM-Wert: Wird der Speicher knapp, beendet der Kernel einen Job vor Home Assistant.',
+    limitsHas2: 'Keinen Supervisor- oder Home-Assistant-API-Zugriff, keine Ordner, kein Docker, keine Rechte. Jobs erreichen dein Netzwerk wie jede App, andere Apps und Home Assistant lassen sich also über ihre Namen aufrufen.',
+    limitsHas3: 'Standardmäßig einen Job gleichzeitig. Erhöhe „Parallele Jobs“ nur, wenn das Gerät Speicher übrig hat.',
+    limitsLimits: 'Was sie nicht kann',
+    limitsLimit1: 'Alpine Linux nutzt musl statt glibc. Programme, die es nur für glibc gibt, etwa die Toolchains von PlatformIO und ESPHome oder die Downloads von setup-node und setup-python, laufen nicht. Installiere, was du brauchst, mit „apk add“ (siehe Reiter Workflows), oder führe solche Builds woanders aus.',
+    limitsLimit2: 'Kein „docker build“, keine Service-Container, kein „container:“ in einem Workflow.',
+    limitsLimit3: 'Schwere Builds gehören auf einen eigenen Rechner. Dort kannst du den offiziellen Runner betreiben und am selben Gitea registrieren; diese App bleibt dann für leichte Jobs neben Home Assistant.',
+    limitsTrust: 'Wer sie nutzen darf',
+    limitsTrustText: 'Jobs führen beliebige Befehle als root innerhalb der App aus. Registriere den Runner nur für Repositories und Organisationen, denen du vertraust (siehe „Einrichten“, Schritt 2), und sei vorsichtig mit Workflows in Pull Requests von Fremden.',
+
     reason_host_unknown: 'der Hostname ist unbekannt',
     reason_refused: 'die Verbindung wurde abgelehnt (läuft die App?)',
     reason_timeout: 'die Anfrage hat das Zeitlimit überschritten',
     reason_tls: 'dem TLS-Zertifikat wird nicht vertraut (siehe Erweitert)',
     reason_failed: 'die Verbindung ist fehlgeschlagen (curl-Fehler {rc})',
     m_no_answer: 'Gitea antwortet nicht: {reason}.',
-    m_login_required: 'Gitea verlangt für alles eine Anmeldung; der Zugriffstoken bestimmt, was die App prüfen darf.',
     m_not_gitea: '{url} antwortet, sieht aber nicht nach Gitea aus (HTTP {http}). Prüfe die Adresse.',
-    m_token_rejected: 'Gitea akzeptiert diesen Zugriffstoken nicht.',
-    m_token_http: 'Der Token konnte nicht geprüft werden (HTTP {http}).',
-    m_token_unreachable: 'Der Token konnte nicht geprüft werden, weil Gitea nicht erreichbar ist.',
     m_registered: 'Der Runner ist registriert.',
     m_waiting: 'Gitea antwortet noch nicht. Die App versucht es von selbst wieder.',
-    m_needs_credentials: 'Trage in der App-Konfiguration einen Registrierungstoken (oder einen Zugriffstoken) ein.',
+    m_needs_credentials: 'Trage in der App-Konfiguration einen Registrierungstoken ein.',
     m_registration_token_rejected: 'Gitea akzeptiert diesen Registrierungstoken nicht. Kopiere einen frischen von der Runner-Seite in Gitea.',
-    m_access_token_rejected: 'Gitea akzeptiert den Zugriffstoken nicht.',
-    m_access_token_scope: 'Der Zugriffstoken darf für diesen Bereich keine Registrierungstoken für Runner erstellen. Er braucht Administratorrechte oder die Schreibberechtigung für Organisationen bzw. Repositories.',
-    m_scope_not_found: 'Gitea kennt für diesen Bereich ({scope} „{target}“) keine Runner-Registrierung: Prüfe „target“ und ob Actions in Gitea aktiviert sind.',
-    m_registration_http: 'Gitea hat die Anfrage nach einem Registrierungstoken mit HTTP {http} beantwortet.',
     m_register_failed: 'Der Runner konnte nicht registriert werden: {detail}',
-    m_docker_no_socket: 'Der Docker-Socket ist nicht verfügbar. Schalte den „Schutzmodus“ auf dem Info-Reiter dieser App aus und starte sie neu.',
-    m_docker_no_answer: 'Die Docker-Engine antwortet nicht auf ihrem Socket.',
-    m_token_scope: 'Gitea erlaubt diesem Zugriffstoken nicht, Runner anzusehen; er braucht Administratorrechte oder die passende Leseberechtigung.',
-    m_runner_gone: 'Gitea kennt diesen Runner nicht (mehr). Mit einem Zugriffstoken registriert die App ihn beim nächsten Start neu.',
-    m_runner_http: 'Gitea hat die Runner-Prüfung mit HTTP {http} beantwortet.',
-    m_no_gitea: 'Es wurde kein Gitea gefunden. Installiere die Gitea-App oder trage die Adresse deines Gitea unter „Gitea-Adresse“ ein.',
-    m_bad_gitea_url: 'Die Gitea-Adresse „{url}“ ist keine Webadresse. Nutze die Form http://homeassistant.local:3000.',
-    m_ca_missing: 'Die Zertifikatsdatei „{name}“ wurde im Ordner /ssl nicht gefunden.',
-    m_bad_target: 'Der Bereich „{scope}“ braucht ein passendes „target“ (Organisationsname oder Besitzer/Repository); „{target}“ passt nicht.',
+    m_bad_gitea_url: 'Die Gitea-Adresse „{url}“ ist keine Webadresse. Nutze die Form http://db21ed7f-gitea:3000.',
     m_bad_runner_name: 'Der Runner-Name „{name}“ darf nur Buchstaben, Ziffern, Leerzeichen, Punkte, Bindestriche und Unterstriche enthalten.',
-    m_bad_label: 'Das Label „{label}“ ist ungültig. Nutze name, name:host oder name:docker://image.',
-    m_no_labels: 'Der Runner hätte nichts auszuführen: Schalte „host_jobs“ ein, oder gib der App Docker-Zugriff und wähle Labels.',
-    m_host_label_ignored: 'Das Label „{label}“ führt Jobs in dieser App aus und wird ignoriert, solange „host_jobs“ ausgeschaltet ist.',
-    m_docker_unavailable: 'Die Docker-Engine ist nicht verfügbar, deshalb werden {count} Label(s) für Jobs in Containern ausgelassen. Schalte den „Schutzmodus“ dieser App aus und starte sie neu.',
-    m_network_missing: 'Das Docker-Netzwerk „{network}“ existiert nicht; Jobs laufen in einem eigenen Netzwerk.',
+    m_bad_label: 'Das Label „{label}“ ist ungültig. Nutze Buchstaben, Ziffern, Punkte, Bindestriche und Unterstriche.',
+    m_no_labels: 'Es gibt kein Label, daher könnte kein Workflow diesen Runner nutzen. Füge mindestens eines hinzu, zum Beispiel home-assistant.',
   },
 };
 
@@ -308,8 +252,10 @@ function copyButton(source) {
   return button;
 }
 
-function field(label, value, rows) {
-  const input = el('textarea', { readOnly: true, rows, value });
+function field(label, value, rows = 0) {
+  const input = rows
+    ? el('textarea', { readOnly: true, rows, value })
+    : el('input', { readOnly: true, value });
   return el('div', { className: 'field' }, el('label', {}, label), el('div', { className: 'line' }, input, copyButton(input)));
 }
 
@@ -317,42 +263,111 @@ function link(href, text, primary) {
   return el('a', { href, target: '_blank', rel: 'noopener', className: primary ? 'button primary' : 'button' }, text);
 }
 
-function banner(id, title, details, lines) {
-  const node = document.getElementById(id);
-  node.hidden = lines.length === 0;
-  const messages = details && details.length ? details.map((entry) => explain(entry)) : lines;
-  node.replaceChildren(el('h2', {}, title), ...messages.map((line) => el('p', {}, line)));
+function card(title, ...children) {
+  return el('section', { className: 'card' }, title && el('h2', {}, title), ...children);
 }
 
-// ---- runner ------------------------------------------------------------------------------------
-
-function scopeText(registration) {
-  return {
-    instance: () => t('scopeInstance'),
-    user: () => t('scopeUser'),
-    organization: () => t('scopeOrganization', registration.target),
-    repository: () => t('scopeRepository', registration.target),
-  }[registration.scope]();
+function callout(kind, ...children) {
+  return el('div', { className: `callout ${kind}` }, ...children);
 }
 
-function giteaRows(status) {
+// steps([title, ...content], ...): numbered instructions.
+function steps(...items) {
+  return el('ol', { className: 'steps' }, items.map(([title, ...content]) => el('li', {}, el('h3', {}, title), ...content)));
+}
+
+function configLink(status) {
+  const slug = status.app.hostname.replace(/-/g, '_');
+  return link(`https://my.home-assistant.io/redirect/supervisor_addon/?addon=${slug}`, t('openConfig'));
+}
+
+// ---- workflows ---------------------------------------------------------------------------------
+
+function workflowHello(label) {
+  return [
+    'name: Hello',
+    'on: [push, workflow_dispatch]',
+    'jobs:',
+    '  hello:',
+    `    runs-on: ${label}`,
+    '    steps:',
+    '      - uses: actions/checkout@v4',
+    '      - run: echo "Hello from Home Assistant"',
+  ].join('\n');
+}
+
+function workflowTools(label) {
+  return [
+    'name: Tools',
+    'on: [push]',
+    'jobs:',
+    '  yamllint:',
+    `    runs-on: ${label}`,
+    '    steps:',
+    '      - uses: actions/checkout@v4',
+    '      - run: |',
+    '          apk add --no-cache yamllint',
+    '          yamllint -d relaxed .',
+  ].join('\n');
+}
+
+function workflowReload(label) {
+  return [
+    'name: Reload Home Assistant',
+    'on: [push]',
+    'jobs:',
+    '  reload:',
+    `    runs-on: ${label}`,
+    '    steps:',
+    '      - name: Check the configuration',
+    '        run: |',
+    '          curl -fsS -X POST -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \\',
+    '            http://homeassistant:8123/api/config/core/check_config | tee check.json',
+    '          grep -q \'"result": *"valid"\' check.json',
+    '      - name: Reload everything that can be reloaded',
+    '        run: |',
+    '          curl -fsS -X POST -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \\',
+    '            http://homeassistant:8123/api/services/homeassistant/reload_all',
+  ].join('\n');
+}
+
+function workflowDeploy(label) {
+  return [
+    'name: Deploy',
+    'on:',
+    '  push:',
+    '    branches: [main]',
+    'jobs:',
+    '  deploy:',
+    `    runs-on: ${label}`,
+    '    steps:',
+    '      - uses: actions/checkout@v4',
+    '      - name: Copy the files',
+    '        run: |',
+    '          mkdir -p ~/.ssh',
+    '          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519',
+    '          chmod 600 ~/.ssh/id_ed25519',
+    '          ssh-keyscan -H target.example >> ~/.ssh/known_hosts',
+    '          tar -c lovelace | ssh deploy@target.example "tar -x -C /srv/lovelace"',
+  ].join('\n');
+}
+
+// ---- panels ----------------------------------------------------------------------------------
+
+function giteaRow(status) {
   const gitea = status.gitea;
-  if (!gitea.url) return [row('bad', t('noGitea'), t('noGiteaDetail'))];
-
-  const source = gitea.source.startsWith('app:') ? 'giteaApp' : 'giteaUrl';
-  const rows = [gitea.reachable
-    ? row('ok', t('giteaOk', gitea.version || ''), t(source, gitea.url))
-    : row('bad', t('giteaBad'), `${gitea.url}: ${explain(gitea)}`)];
-  if (gitea.token && gitea.token.state === 'ok') rows.push(row('ok', t('tokenOk'), t('tokenOkDetail', gitea.token.login)));
-  else if (gitea.token && gitea.token.state !== 'none') rows.push(row('bad', t('tokenBad'), explain(gitea.token)));
-  return rows;
+  const source = gitea.source === 'default' ? 'giteaDefault' : 'giteaUrl';
+  if (!gitea.url) return row('bad', t('giteaBad'));
+  return gitea.reachable
+    ? row('ok', gitea.version ? t('giteaOk', gitea.version) : t('giteaOkNoVersion'), t(source, gitea.url))
+    : row('bad', t('giteaBad'), `${gitea.url}: ${explain(gitea)}`);
 }
 
 function registrationRow(status) {
   const registration = status.registration;
   const detail = explain(registration);
   switch (registration.state) {
-    case 'registered': return row('ok', t('regRegistered', registration.name), scopeText(registration));
+    case 'registered': return row('ok', t('regRegistered', registration.name), t('regRegisteredDetail'));
     case 'waiting': return row('warn', t('regWaiting'), detail);
     case 'needs_credentials': return row('bad', t('regNeeds'), t('regNeedsDetail'));
     case 'rejected': return row('bad', t('regRejected'), detail);
@@ -371,151 +386,90 @@ function runnerRows(status) {
   else if (runner.jobs_running > 0) rows.push(row('ok', t('runnerBusy', runner.jobs_running, runner.capacity)));
   else rows.push(row('ok', t('runnerUp'), t('runnerUpDetail', runner.capacity)));
 
-  const remote = runner.remote;
-  if (remote.state === 'online') rows.push(row('ok', t(remote.busy ? 'remoteBusy' : 'remoteOnline')));
-  else if (remote.state === 'offline') rows.push(row('warn', t('remoteOffline'), t('remoteOfflineDetail')));
-  else if (remote.code) rows.push(row('warn', t('remoteUnknown'), explain(remote)));
-
   if (runner.jobs_succeeded + runner.jobs_failed > 0) {
     rows.push(row('ok', t('jobsDone'), t('jobsDoneDetail', runner.jobs_succeeded, runner.jobs_failed)));
   }
   return rows;
 }
 
-function renderRunner(status) {
-  const buttons = [
-    status.gitea.runners_page && link(status.gitea.runners_page, t('runnersPage')),
-    link(`https://my.home-assistant.io/redirect/supervisor_addon/?addon=${status.app.hostname.replace(/-/g, '_')}`, t('openConfig')),
+function overviewPanel(status) {
+  return [
+    card(null, el('p', {}, t('overviewIntro'))),
+    card(t('status'), giteaRow(status), registrationRow(status), ...runnerRows(status),
+      status.runner.labels.length > 0 && row('ok', t('labelsTitle'), t('labelsDetail', status.runner.labels.join(', '))),
+      el('div', { className: 'actions' }, configLink(status))),
+    card(t('isolationTitle'), el('p', {}, t('isolationText'))),
   ];
-  document.getElementById('runner').replaceChildren(
-    el('h2', {}, t('runner')),
-    ...giteaRows(status), registrationRow(status), ...runnerRows(status),
-    el('div', { className: 'actions' }, ...buttons));
 }
 
-// ---- jobs in containers ------------------------------------------------------------------------
-
-function labelList(labels) {
-  return el('ul', { className: 'labels' }, labels.map((label) => el('li', { className: label.skipped ? 'skipped' : '' },
-    label.image ? `${label.name} → ${label.image}` : label.name,
-    label.skipped ? ` (${t('labelSkipped')})` : '')));
+function setupPanel(status) {
+  return [card(t('setupTitle'), el('p', {}, t('setupIntro')),
+    steps(
+      [t('setupStep1'), el('p', {}, t('setupStep1Text'))],
+      [t('setupStep2'), el('p', {}, t('setupStep2Text'))],
+      [t('setupStep3'), el('p', {}, t('setupStep3Text')), field(t('addresses'), status.gitea.url),
+        el('div', { className: 'actions' }, configLink(status))],
+      [t('setupStep4'), el('p', {}, t('setupStep4Text'))]))];
 }
 
-function renderContainers(status) {
-  const dockerLabels = status.jobs.labels.filter((label) => label.kind === 'docker');
-  const rows = [status.docker.available
-    ? row('ok', t('dockerOk', status.docker.version), t('dockerOkDetail'))
-    : row(dockerLabels.length ? 'bad' : 'warn', t('dockerBad'), `${explain(status.docker)} ${t('dockerBadDetail')}`)];
+function workflowsPanel(status) {
+  const label = status.runner.labels[0] || 'home-assistant';
+  return [card(t('workflowsTitle'), el('p', {}, t('workflowsIntro', label)),
+    field(t('wfHello'), workflowHello(label), 9),
+    field(t('wfTools'), workflowTools(label), 11),
+    field(t('wfReload'), workflowReload(label), 15),
+    el('p', { className: 'muted' }, t('wfReloadHint')),
+    field(t('wfDeploy'), workflowDeploy(label), 16),
+    el('p', { className: 'muted' }, t('wfDeployHint')))];
+}
 
-  if (dockerLabels.length === 0) {
-    rows.push(row('warn', t('noContainerLabels'), t('noContainerLabelsDetail')));
-  } else {
-    rows.push(el('h3', {}, t('labelsHeading')), labelList(dockerLabels));
-    const imageNote = { slim: 'imageSlim', standard: 'imageStandard', full: 'imageFull' }[status.jobs.image];
-    rows.push(el('p', { className: 'muted' }, t(imageNote)));
-    if (status.docker.available && status.jobs.network) {
-      rows.push(row('ok', t('networkJoined', status.jobs.network), t('networkJoinedDetail')));
-    } else if (status.docker.available) {
-      rows.push(row('warn', t('networkOff'), t('networkOffDetail')));
-    }
-    if (status.jobs.add_host) rows.push(row('ok', t('addHost', status.jobs.add_host.split(':')[0]), t('addHostDetail')));
-    if (status.jobs.docker_in_jobs) rows.push(row('warn', t('dockerInJobs'), t('dockerInJobsDetail')));
-    if (status.jobs.privileged) rows.push(row('warn', t('privileged'), t('privilegedDetail')));
+function limitsPanel() {
+  const list = (keys) => el('ul', {}, keys.map((key) => el('li', {}, t(key))));
+  return [
+    card(t('limitsTitle'), el('h3', {}, t('limitsWhy')), el('p', {}, t('limitsWhyText'))),
+    card(t('limitsHas'), list(['limitsHas1', 'limitsHas2', 'limitsHas3'])),
+    card(t('limitsLimits'), list(['limitsLimit1', 'limitsLimit2', 'limitsLimit3'])),
+    card(t('limitsTrust'), callout('warn', el('p', {}, t('limitsTrustText')))),
+  ];
+}
+
+const TABS = [['overview', overviewPanel], ['setup', setupPanel], ['workflows', workflowsPanel], ['limits', limitsPanel]];
+
+// ---- tabs and rendering ----------------------------------------------------------------------
+
+let currentTab = TABS.some(([name]) => name === location.hash.slice(1)) ? location.hash.slice(1) : 'overview';
+
+function showTab(name) {
+  currentTab = name;
+  history.replaceState(null, '', `#${name}`);
+  for (const [tab] of TABS) {
+    document.getElementById(`panel-${tab}`).hidden = tab !== name;
+    document.getElementById(`tab-${tab}`).setAttribute('aria-selected', String(tab === name));
   }
-  document.getElementById('containers').replaceChildren(el('h2', {}, t('containers')), ...rows);
 }
 
-// ---- jobs on Home Assistant itself --------------------------------------------------------------
-
-function renderHost(status) {
-  const card = document.getElementById('host');
-  if (!status.host.enabled) {
-    card.replaceChildren(el('h2', {}, t('host')), row('ok', t('hostOff'), t('hostOffDetail')));
-    return;
+function buildTabs() {
+  const nav = document.getElementById('tabs');
+  const panels = document.getElementById('panels');
+  for (const [name] of TABS) {
+    const button = el('button', { type: 'button', id: `tab-${name}`, role: 'tab' }, t(`tab_${name}`));
+    button.addEventListener('click', () => { showTab(name); window.scrollTo({ top: 0 }); });
+    nav.append(button);
+    panels.append(el('div', { id: `panel-${name}`, className: 'panel', role: 'tabpanel' }));
   }
-  const folders = status.host.folders.map((folder) => `${folder.path} (${folder.name})`).join(', ');
-  card.replaceChildren(
-    el('h2', {}, t('host')),
-    row('warn', t('hostOn', 'home-assistant'), t('hostOnDetail')),
-    row('ok', t('hostFolders'), t('hostFoldersDetail', folders)),
-    status.host.home_assistant_api
-      ? row('warn', t('hostApiOn'), t('hostApiOnDetail'))
-      : row('ok', t('hostApiOff'), t('hostApiOffDetail')));
 }
 
-// ---- examples and companions ---------------------------------------------------------------------
-
-function workflowHello(label) {
-  return [
-    'name: Hello',
-    'on: [push, workflow_dispatch]',
-    'jobs:',
-    '  hello:',
-    `    runs-on: ${label}`,
-    '    steps:',
-    '      - uses: actions/checkout@v4',
-    '      - run: echo "Hello from Home Assistant"',
-  ].join('\n');
+function renderProblems(status) {
+  const banner = document.getElementById('problems');
+  banner.hidden = status.problems.length === 0;
+  const details = status.problem_details && status.problem_details.length ? status.problem_details : null;
+  const lines = details ? details.map((problem) => explain(problem)) : status.problems;
+  banner.replaceChildren(el('h2', {}, t('problems')), ...lines.map((line) => el('p', {}, line)));
 }
 
-function workflowLint(label) {
-  return [
-    'name: YAML lint',
-    'on: [push, pull_request]',
-    'jobs:',
-    '  lint:',
-    `    runs-on: ${label}`,
-    '    steps:',
-    '      - uses: actions/checkout@v4',
-    '      - run: |',
-    '          apt-get update -qq && apt-get install -y -qq yamllint',
-    '          yamllint -d relaxed .',
-  ].join('\n');
-}
-
-function workflowReload() {
-  return [
-    'name: Reload Home Assistant',
-    'on: [push]',
-    'jobs:',
-    '  reload:',
-    '    runs-on: home-assistant',
-    '    steps:',
-    '      - name: Check the configuration',
-    '        run: |',
-    '          curl -fsS -X POST -H "Authorization: Bearer $SUPERVISOR_TOKEN" \\',
-    '            "$HA_API_URL/config/core/check_config" | tee check.json',
-    '          grep -q \'"result": *"valid"\' check.json',
-    '      - name: Reload everything that can be reloaded',
-    '        run: |',
-    '          curl -fsS -X POST -H "Authorization: Bearer $SUPERVISOR_TOKEN" \\',
-    '            "$HA_API_URL/services/homeassistant/reload_all"',
-  ].join('\n');
-}
-
-function renderTry(status) {
-  const usable = status.jobs.labels.filter((label) => !label.skipped);
-  const containerLabel = usable.find((label) => label.kind === 'docker');
-  const first = usable.length ? usable[0].name : 'home-assistant';
-  const examples = [field(t('tryHello'), workflowHello(first), 9)];
-  if (containerLabel) examples.push(field(t('tryLint'), workflowLint(containerLabel.name), 11));
-  if (status.host.enabled && status.host.home_assistant_api) examples.push(field(t('tryReload'), workflowReload(), 14));
-  document.getElementById('try').replaceChildren(el('h2', {}, t('tryIt')), el('p', {}, t('tryIntro')), ...examples);
-}
-
-function renderCompanions(status) {
-  const card = document.getElementById('companions');
-  card.hidden = status.companions.length === 0;
-  const tips = { mcp: 'tipMcp', git_exporter: 'tipGitExporter', rsync_local: 'tipRsyncLocal' };
-  card.replaceChildren(
-    el('h2', {}, t('companions')),
-    ...status.companions.map((app) => row(app.state === 'started' ? 'ok' : 'warn',
-      `${app.name} (${t('companionState', app.state)})`, t(tips[app.id]))));
-}
-
-// The examples hold text the user may be selecting or copying; they are only drawn again when
-// what they are made of changes.
-let lastExamples = '';
+// What the panels show, without the time of the check: they are only drawn again when it changes,
+// so that text the user is selecting or has copied stays untouched by the regular refresh.
+let lastContent = '';
 
 function render(status) {
   const release = document.getElementById('release');
@@ -523,18 +477,15 @@ function render(status) {
   release.hidden = !prerelease;
   release.textContent = t('preRelease', prerelease);
   document.getElementById('checked').textContent = t('checkedAt', new Date(status.checked_at).toLocaleString());
-  banner('problems', t('problems'), status.problem_details, status.problems);
-  banner('notices', t('notices'), status.notice_details, status.notices);
-  renderRunner(status);
-  renderContainers(status);
-  renderHost(status);
-  renderCompanions(status);
+  renderProblems(status);
 
-  const examples = JSON.stringify([status.jobs.labels, status.host.enabled, status.host.home_assistant_api]);
-  if (examples !== lastExamples) {
-    lastExamples = examples;
-    renderTry(status);
+  const content = JSON.stringify({ ...status, checked_at: '' });
+  if (content === lastContent) return;
+  lastContent = content;
+  for (const [name, build] of TABS) {
+    document.getElementById(`panel-${name}`).replaceChildren(...build(status).filter(Boolean));
   }
+  showTab(currentTab);
 }
 
 async function load(attempt = 0) {
@@ -545,32 +496,29 @@ async function load(attempt = 0) {
   if (attempt < 30) setTimeout(() => load(attempt + 1), 2000);
 }
 
-async function recheck() {
-  const button = document.getElementById('recheck');
-  button.disabled = true;
-  button.textContent = t('rechecking');
-  try {
-    const reply = await fetch('cgi-bin/recheck', { method: 'POST' });
-    if (reply.ok) render(await reply.json());
-  } finally {
-    button.disabled = false;
-    button.textContent = t('recheck');
+async function refresh(button) {
+  if (button) {
+    button.disabled = true;
+    button.textContent = t('rechecking');
   }
-}
-
-// While the page is open, the status refreshes itself: jobs start and end, the runner goes online.
-async function refreshQuietly() {
-  if (document.visibilityState !== 'visible') return;
   try {
     const reply = await fetch('cgi-bin/recheck', { method: 'POST' });
     if (reply.ok) render(await reply.json());
   } catch {
     // The next round tries again.
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = t('recheck');
+    }
   }
 }
 
-document.getElementById('recheck').textContent = t('recheck');
-document.getElementById('recheck').addEventListener('click', recheck);
+const recheckButton = document.getElementById('recheck');
+recheckButton.textContent = t('recheck');
+recheckButton.addEventListener('click', () => refresh(recheckButton));
 document.title = 'Gitea Runner';
+buildTabs();
 load();
-setInterval(refreshQuietly, 15000);
+// While the page is open, the status refreshes itself: jobs start and end, the runner goes online.
+setInterval(() => { if (document.visibilityState === 'visible') refresh(null); }, 15000);

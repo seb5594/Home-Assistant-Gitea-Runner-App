@@ -9,16 +9,9 @@ WORK_DIR="${WORK_DIR:-${DATA_DIR}/work}"
 RUNNER_HOME="${RUNNER_HOME:-${DATA_DIR}/home}"
 
 write_runner_config() {
-  local line level="info" jobs_use_docker='"-"' options=""
+  local label level="info"
   if [[ "$GR_DEBUG" == "true" ]]; then
     level="debug"
-  fi
-  # "-" keeps the Docker socket out of the jobs, an empty value mounts it.
-  if [[ "$GR_DOCKER_IN_JOBS" == "true" ]]; then
-    jobs_use_docker='""'
-  fi
-  if [[ -n "$GR_ADD_HOST" ]]; then
-    options="--add-host=${GR_ADD_HOST}"
   fi
 
   mkdir -p "$(dirname "$RUNNER_CONFIG")" "$CACHE_DIR" "$WORK_DIR" "$RUNNER_HOME"
@@ -29,24 +22,13 @@ write_runner_config() {
     echo "runner:"
     echo "  file: $(yaml_string "$RUNNER_FILE")"
     echo "  capacity: ${GR_CAPACITY}"
-    echo "  timeout: ${GR_TIMEOUT_MINUTES}m"
-    echo "  insecure: ${GR_GITEA_INSECURE}"
-    if [[ "$GR_HA_API" == "true" ]]; then
-      echo "  envs:"
-      echo "    HA_API_URL: $(yaml_string "$HOME_ASSISTANT_API_URL")"
-    fi
+    echo "  insecure: ${GR_IGNORE_TLS}"
     echo "  labels:"
-    for line in "${GR_LABEL_LINES[@]}"; do
-      echo "    - $(yaml_string "$line")"
+    for label in "${GR_LABELS[@]}"; do
+      echo "    - $(yaml_string "${label}:host")"
     done
     echo "cache:"
-    echo "  enabled: ${GR_CACHE}"
     echo "  dir: $(yaml_string "$CACHE_DIR")"
-    echo "container:"
-    echo "  network: $(yaml_string "$GR_NETWORK")"
-    echo "  privileged: ${GR_PRIVILEGED}"
-    echo "  docker_host: ${jobs_use_docker}"
-    echo "  options: $(yaml_string "$options")"
     echo "host:"
     echo "  workdir_parent: $(yaml_string "$WORK_DIR")"
     echo "metrics:"
