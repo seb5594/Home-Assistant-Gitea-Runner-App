@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+# Serves the app page through Home Assistant ingress. The access rules in httpd.conf let
+# only the ingress gateway (and the app itself) in.
+
+exec busybox-extras httpd -f -p 8099 -h /usr/share/gitea-runner/web -c /etc/gitea-runner/httpd.conf

@@ -1,0 +1,85 @@
+name: Gitea Runner
+description: Runs the Actions workflows of your Gitea in containers on Home Assistant, or directly on it.
+version: "1.0.0-dev1"
+slug: gitea_runner
+stage: experimental
+init: false
+arch:
+  - amd64
+  - aarch64
+url: https://github.com/seb5594/Home-Assistant-Gitea-Runner-App
+hassio_api: true
+hassio_role: default
+homeassistant_api: true
+docker_api: true
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:play-box-multiple
+panel_title: Gitea Runner
+map:
+  - type: homeassistant_config
+    read_only: false
+  - type: share
+    read_only: false
+  - type: media
+    read_only: false
+  - type: backup
+    read_only: true
+  - type: ssl
+    read_only: true
+# Caches and job workspaces would only bloat the backups; the runner registration stays in them.
+backup_exclude:
+  - /data/cache
+  - /data/work
+  - /data/home
+options:
+  gitea_url: ""
+  registration:
+    scope: instance
+    target: ""
+    registration_token: ""
+    access_token: ""
+  runner_name: ""
+  capacity: 1
+  job_image: slim
+  labels:
+    - ubuntu-latest
+  host_jobs:
+    enabled: false
+    home_assistant_api: false
+  advanced:
+    extra_labels: []
+    home_assistant_network: true
+    docker_in_jobs: false
+    privileged_jobs: false
+    job_timeout_minutes: 180
+    cache: true
+    ca_certificate: ""
+    ignore_certificate_errors: false
+    debug_logging: false
+schema:
+  gitea_url: str?
+  registration:
+    scope: list(instance|user|organization|repository)
+    target: str?
+    registration_token: password?
+    access_token: password?
+  runner_name: str?
+  capacity: int(1,8)
+  job_image: list(slim|standard|full)
+  labels:
+    - list(ubuntu-latest|ubuntu-26.04|ubuntu-24.04|ubuntu-22.04)
+  host_jobs:
+    enabled: bool
+    home_assistant_api: bool
+  advanced:
+    extra_labels:
+      - str
+    home_assistant_network: bool
+    docker_in_jobs: bool
+    privileged_jobs: bool
+    job_timeout_minutes: int(10,1440)
+    cache: bool
+    ca_certificate: str?
+    ignore_certificate_errors: bool
+    debug_logging: bool

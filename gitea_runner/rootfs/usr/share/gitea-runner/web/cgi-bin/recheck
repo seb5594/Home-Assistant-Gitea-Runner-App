@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+# shellcheck source-path=SCRIPTDIR
+# Behind the "Check again" button of the app page, and the regular refresh while the page is
+# open: runs the checks again and answers with the new status.
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# shellcheck source=../../../../lib/gitea-runner/load.sh
+source /usr/lib/gitea-runner/load.sh
+
+if [[ "${REQUEST_METHOD:-}" != "POST" ]]; then
+  printf 'Status: 405 Method Not Allowed\r\nAllow: POST\r\n\r\n'
+  exit 0
+fi
+
+printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
+refresh_status

@@ -1,0 +1,73 @@
+configuration:
+  gitea_url:
+    name: Gitea address
+    description: Leave empty to use the Gitea app installed next to this one. Otherwise enter the address of your Gitea, for example http://homeassistant.local:3000 or https://git.example.com.
+  registration:
+    name: Registration
+    description: How the runner introduces itself to Gitea. Needed once; afterwards the runner remembers its registration.
+    fields:
+      scope:
+        name: Scope
+        description: Who may use the runner. "instance" serves every repository of your Gitea (needs administrator rights), "user" the repositories of the token's owner, "organization" and "repository" only the one named under target.
+      target:
+        name: Target
+        description: The name of the organization, or owner/repository, for the scopes of the same name. Leave empty for "instance" and "user".
+      registration_token:
+        name: Registration token
+        description: Copy it from the runners page of Gitea (the app page has the link). Enter a new one and restart the app to register the runner again. Not needed when an access token is set.
+      access_token:
+        name: Access token
+        description: Optional alternative to the registration token. The app fetches the registration token itself and also shows how Gitea sees the runner. Create it in Gitea under Settings > Applications. For the scope "instance" the owner must be an administrator.
+  runner_name:
+    name: Runner name
+    description: How the runner is called in Gitea. Leave empty for "home-assistant".
+  capacity:
+    name: Parallel jobs
+    description: How many jobs run at the same time. Every job needs memory and CPU; on a Raspberry Pi keep it at 1.
+  job_image:
+    name: Job image size
+    description: "slim: Node.js on Debian, small and quick to download (recommended). standard: many build tools included, several hundred megabytes more. full: everything GitHub's runners have, several gigabytes."
+  labels:
+    name: Labels for jobs in containers
+    description: Which "runs-on" names the runner answers with a container. It needs Docker access, which means switching off Protection mode in the Info tab of this app.
+  host_jobs:
+    name: Jobs on Home Assistant itself
+    description: Optional. Jobs with the label "home-assistant" run directly in this app, as root, next to your Home Assistant files. Only for repositories you trust.
+    fields:
+      enabled:
+        name: Enable host jobs
+        description: Adds the label "home-assistant". The folders config, share, media, backup and ssl are available to those jobs.
+      home_assistant_api:
+        name: Home Assistant API for host jobs
+        description: Gives host jobs the Supervisor token (SUPERVISOR_TOKEN) and the API address (HA_API_URL), so a workflow can check or reload Home Assistant. Every workflow running here can read the token.
+  advanced:
+    name: Advanced
+    description: Rarely needed.
+    fields:
+      extra_labels:
+        name: Extra labels
+        description: "More labels in the form name:docker://image, for example python:docker://python:3.13-slim. name or name:host runs on this app and needs host jobs."
+      home_assistant_network:
+        name: Join the app network
+        description: On (recommended) lets jobs in containers reach Gitea, Home Assistant and the other apps by name.
+      docker_in_jobs:
+        name: Docker inside jobs
+        description: Gives jobs in containers control of the Docker engine of Home Assistant OS, which building images needs. It also gives them control of everything on this host.
+      privileged_jobs:
+        name: Privileged jobs
+        description: Runs job containers privileged. Only for the rare workflow that needs it.
+      job_timeout_minutes:
+        name: Job timeout (minutes)
+        description: Longest time a job may run. Gitea has its own limit of three hours.
+      cache:
+        name: Cache for actions
+        description: Starts the cache server that actions/cache and similar actions use. Switch it off to save a little memory when no workflow uses it.
+      ca_certificate:
+        name: CA certificate file
+        description: Name of a PEM file in the /ssl folder that signed your Gitea certificate, for example my-ca.pem. The clean way to use HTTPS with your own certificate authority.
+      ignore_certificate_errors:
+        name: Ignore certificate errors
+        description: Accepts any certificate of Gitea. Only for a Gitea in your own network that you cannot give a trusted certificate.
+      debug_logging:
+        name: Debug logging
+        description: Logs much more detail, including what the runner exchanges with Gitea. Switch it off again after troubleshooting.

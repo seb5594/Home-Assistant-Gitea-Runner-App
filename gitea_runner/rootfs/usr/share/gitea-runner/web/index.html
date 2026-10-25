@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gitea Runner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Gitea Runner</h1>
+      <span id="release" class="pill" hidden></span>
+      <button id="recheck" type="button"></button>
+    </header>
+    <p id="checked" class="muted"></p>
+    <section id="problems" class="banner bad" hidden></section>
+    <section id="notices" class="banner warn" hidden></section>
+    <section id="runner" class="card"></section>
+    <section id="containers" class="card"></section>
+    <section id="host" class="card"></section>
+    <section id="try" class="card"></section>
+    <section id="companions" class="card" hidden></section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
