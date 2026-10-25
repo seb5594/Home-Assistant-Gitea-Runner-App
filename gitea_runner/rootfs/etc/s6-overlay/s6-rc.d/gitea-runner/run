@@ -1,0 +1,99 @@
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+# shellcheck source-path=SCRIPTDIR
+# Resolves the app options, registers the runner with Gitea and keeps it running.
+
+# Bashio debug output would print Supervisor replies.
+bashio::log.level info
+
+log_info() { bashio::log.info "$*"; }
+log_warning() { bashio::log.warning "$*"; }
+log_error() { bashio::log.error "$*"; }
+
+# shellcheck source=../../../../usr/lib/gitea-runner/load.sh
+source /usr/lib/gitea-runner/load.sh
+
+DAEMON_PID=""
+
+# The runner takes its jobs from Gitea. Jobs in host mode run as children of the runner and
+# inherit its environment, so the Supervisor token only stays when the user asked for it.
+launch_daemon() {
+  (
+    if [[ "$GR_HA_API" != "true" ]]; then
+      unset SUPERVISOR_TOKEN HASSIO_TOKEN
+    fi
+    if [[ -n "$GR_CA_CERT" ]]; then
+      export SSL_CERT_FILE="$GR_CA_CERT"
+    fi
+    export HOME="$RUNNER_HOME"
+    cd "$WORK_DIR" || exit 1
+    exec gitea-runner -c "$RUNNER_CONFIG" daemon
+  ) &
+  DAEMON_PID=$!
+  : >"${RUNTIME_DIR}/daemon"
+}
+
+# shellcheck disable=SC2317  # called by the TERM trap in main
+stop_daemon() {
+  if [[ -n "$DAEMON_PID" ]]; then
+    kill "$DAEMON_PID" 2>/dev/null || true
+    wait "$DAEMON_PID" 2>/dev/null || true
+  fi
+}
+
+log_summary() {
+  local labels
+  labels="$(jq -r '[.jobs.labels[] | select(.skipped | not) | .name] | join(", ")' "$RUNTIME_DIR/resolved.json")"
+  log_info "Labels: ${labels}. Capacity: ${GR_CAPACITY} job(s) at a time."
+  if [[ -n "$GR_NETWORK" ]]; then
+    log_info "Jobs in containers join the Docker network '${GR_NETWORK}': they reach Gitea, Home Assistant and the other apps by name."
+  fi
+  if [[ "$GR_HOST_ENABLED" == "true" ]]; then
+    log_warning "Host mode is on: jobs with the label '${HOST_LABEL}' run inside this app as root, with access to the Home Assistant folders. Only let repositories you trust use this runner."
+  fi
+  if [[ "$GR_DOCKER_IN_JOBS" == "true" || "$GR_PRIVILEGED" == "true" ]]; then
+    log_warning "Jobs in containers can control the Docker engine of Home Assistant OS (docker_in_jobs / privileged_jobs)."
+  fi
+  if [[ "$GR_DEBUG" == "true" ]]; then
+    log_warning "Debug logging is on. Switch it off after troubleshooting."
+  fi
+}
+
+# Keeps the app running without a runner, so that the app page can still explain what is missing.
+idle() {
+  log_warning "The runner was not started. The app page tells what to change in the configuration."
+  trap 'exit 0' TERM INT
+  sleep 2147483647 &
+  wait $!
+}
+
+main() {
+  log_info "Starting Gitea Runner"
+  trap 'stop_daemon; exit 0' TERM INT
+  mkdir -p "$RUNTIME_DIR"
+  rm -f -- "${RUNTIME_DIR}/daemon" "$REGISTRATION_STATE_FILE"
+  resolve_settings
+  refresh_status >/dev/null
+  if ((${#GR_PROBLEMS[@]} > 0)); then
+    idle
+  fi
+
+  write_runner_config
+  log_summary
+  if ! ensure_registered; then
+    refresh_status >/dev/null
+    idle
+  fi
+
+  launch_daemon
+  sleep 3 # the runner opens its metrics address a moment after it starts
+  refresh_status >/dev/null
+  log_status
+
+  local code=0
+  wait "$DAEMON_PID" || code=$?
+  log_error "The runner stopped (exit code ${code})."
+  exit 1
+}
+
+main "$@"
