@@ -1,8 +1,8 @@
 {
-  "image_pulls": 16,
+  "image_pulls": 20,
   "image_size": {
-    "aarch64": 152439801,
-    "amd64": 142836738
+    "aarch64": 153564081,
+    "amd64": 143875572
   },
   "runtime_tests": 13
 }
