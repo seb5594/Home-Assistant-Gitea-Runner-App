@@ -2,7 +2,7 @@
 <h1 align="center">Gitea Runner</h1>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/seb5594/Home-Assistant-Gitea-Runner-App/main/gitea_runner/logo.png" alt="Gitea Runner" width="286" height="160">
+  <img src="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App/blob/dev/gitea_runner/icon.png?raw=true" alt="Gitea Runner" width="250" height="250">
 </p>
 
 ---
