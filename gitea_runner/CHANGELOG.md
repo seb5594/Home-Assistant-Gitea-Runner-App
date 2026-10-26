@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.10
+
+* New version scheme: pre-releases are called Alpha from now on (earlier ones were 1.0.0-dev1 to 1.0.0-dev6). The releases and the badge show just "Alpha 10".
+
 ## 1.0.0-dev6
 
 * Dependencies: update alpine base and packages (base image 3.24-2026.10.1, curl 8.23.0-r0).

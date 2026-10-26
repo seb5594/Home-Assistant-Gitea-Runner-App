@@ -12,7 +12,7 @@ An upstream image is a pin the Dockerfile marks for Renovate:
 
 `update` asks Docker Hub for the newest release tag of such an image and, when it is newer, changes the
 pin, raises the app version and adds a changelog entry. The app version moves like this:
-1.0.0-dev3 becomes 1.0.0-dev4 (pre-releases count up), 1.2.3 becomes 1.2.4. A new version is what makes
+1.0.0-alpha.3 becomes 1.0.0-alpha.4 (pre-releases count up), 1.2.3 becomes 1.2.4. A new version is what makes
 the release pipeline publish the app again.
 
 `bump` is for pull requests that change the app in another way (Renovate raising the base image or an
@@ -66,7 +66,7 @@ def newest_release(repository):
 
 def next_version(version):
     """The version after this one: pre-releases count up, releases get a new patch number."""
-    pre_release = re.fullmatch(r"(\d+\.\d+\.\d+-dev)(\d+)", version)
+    pre_release = re.fullmatch(r"(\d+\.\d+\.\d+-(?:alpha\.|dev))(\d+)", version)
     if pre_release:
         return f"{pre_release[1]}{int(pre_release[2]) + 1}"
     release = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", version)

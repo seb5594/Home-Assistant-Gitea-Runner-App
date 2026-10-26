@@ -98,7 +98,7 @@ export PATH="$fixture/bin:$PATH"
 
 export RUNTIME_DIR="$fixture/run" OPTIONS_FILE="$fixture/options.json" DATA_DIR="$fixture/data" VERSION_FILE="$fixture/version"
 mkdir -p "$RUNTIME_DIR" "$DATA_DIR"
-echo 1.0.0-dev99 >"$VERSION_FILE"
+echo 1.0.0-alpha.99 >"$VERSION_FILE"
 
 # options <json>: the app options as the Supervisor would store them (the default Gitea address
 # is replaced by the mock).
@@ -140,7 +140,7 @@ expect_equal "default address" "http://db21ed7f-gitea:3000" "$GR_GITEA_URL"
 expect_equal "default source" "default" "$GR_GITEA_SOURCE"
 expect_equal "default name" "home-assistant" "$GR_NAME"
 expect_equal "host name of the app" "$(hostname)" "$GR_APP_HOSTNAME"
-expect_equal "version of the image" "1.0.0-dev99" "$GR_APP_VERSION"
+expect_equal "version of the image" "1.0.0-alpha.99" "$GR_APP_VERSION"
 expect_equal "no problems" "0" "${#GR_PROBLEMS[@]}"
 pass "without an address the Gitea app of alexbelgium is used"
 
