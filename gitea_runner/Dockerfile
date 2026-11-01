@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/home-assistant/base:3.24-2026.10.1
+ARG BUILD_FROM=ghcr.io/home-assistant/base:3.24-2026.10.3
 
 # The official image only holds the static Go binary on a bare Alpine. The binary is copied
 # into the Home Assistant base image, which brings bashio and s6-overlay.
@@ -16,7 +16,7 @@ RUN apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/git
     git=2.54.0-r0 \
     # renovate: datasource=repology depName=alpine_3_24/nodejs
-    nodejs=24.22.1-r0 \
+    nodejs=24.22.1-r1 \
     # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
     openssh-client-default=10.3_p1-r1 \
     # renovate: datasource=repology depName=alpine_3_24/util-linux-misc
