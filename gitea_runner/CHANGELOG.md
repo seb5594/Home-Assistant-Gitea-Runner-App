@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.11
+
+* Update the base image and packaged dependencies to available release versions; restore reproducible CI builds.
+
 ## 1.0.0-alpha.10
 
 * New version scheme: pre-releases are called Alpha from now on (earlier ones were 1.0.0-dev1 to 1.0.0-dev6). The releases and the badge show just "Alpha 10".
