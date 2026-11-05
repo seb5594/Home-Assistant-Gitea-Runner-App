@@ -18,7 +18,7 @@ RUN apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/nodejs
     nodejs=24.22.1-r1 \
     # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
-    openssh-client-default=10.3_p1-r1 \
+    openssh-client-default=10.3_p1-r2 \
     # renovate: datasource=repology depName=alpine_3_24/util-linux-misc
     util-linux-misc=2.42.3-r1 \
     # renovate: datasource=repology depName=alpine_3_24/busybox-extras
