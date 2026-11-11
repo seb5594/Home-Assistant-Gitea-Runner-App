@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.14
+
+* 📦 Update gitea/runner to 6.0.0 (was 5.4.1).
+
 ## 1.0.0-alpha.13
 
 * 📦 Update gitea/runner to 5.4.1 (was 5.4.0).
