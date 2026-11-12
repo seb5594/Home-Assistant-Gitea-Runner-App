@@ -1,6 +1,7 @@
 name: Gitea Runner
 description: Runs the Actions workflows of your Gitea inside an isolated app, without access to your Home Assistant host.
-version: "1.0.0-alpha.14"
+# Replaced independent app version: version: "1.0.0-alpha.14"
+version: "6.0.0"
 slug: gitea_runner
 stage: experimental
 init: false
