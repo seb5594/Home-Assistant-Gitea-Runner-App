@@ -16,17 +16,19 @@ FROM ${BUILD_FROM}
 # Replaced unavailable Alpine pin: nodejs=24.22.1-r1
 # Alpine 3.24 currently ships different Node.js patch builds on amd64 and arm64.
 # Replaced: RUN apk add --no-cache \
-ARG TARGETARCH
+# Replaced: ARG TARGETARCH
 # Replaced: ARG NODEJS_VERSION=24.22.3-r0
 # Replaced: ARG NODEJS_VERSION_ARM64=24.22.1-r1
-ARG BUILD_ARCH=amd64
+# Replaced: ARG BUILD_ARCH=amd64
 # Replaced: RUN if [ "${TARGETARCH}" = arm64 ]; then NODEJS_VERSION="${NODEJS_VERSION_ARM64}"; fi; \
 # Replaced: RUN apk add --no-cache \
 # Select each architecture's available Node.js patch before installing shared packages.
-RUN if [ "${TARGETARCH}" = arm64 ] || [ "${BUILD_ARCH}" = aarch64 ]; then \
+# Replaced: RUN if [ "${TARGETARCH}" = arm64 ] || [ "${BUILD_ARCH}" = aarch64 ]; then \
+# Replaced:     apk add --no-cache nodejs=24.22.1-r1; \
+# Replaced: else apk add --no-cache nodejs=24.22.3-r0; fi \
+# Alpine mirrors can expose the two patch builds at different times on amd64 and arm64.
+RUN if ! apk add --no-cache nodejs=24.22.3-r0; then \
         apk add --no-cache nodejs=24.22.1-r1; \
-    else \
-        apk add --no-cache nodejs=24.22.3-r0; \
     fi \
     && apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/git
@@ -61,7 +63,7 @@ RUN chmod a+x /usr/lib/gitea-runner/*.sh /usr/share/gitea-runner/web/cgi-bin/* \
 
 # Replaced independent app version: ARG BUILD_VERSION=1.0.0-alpha.14
 ARG BUILD_VERSION=6.0.0
-# Replaced: ARG BUILD_ARCH=amd64
+ARG BUILD_ARCH=amd64
 RUN echo "${BUILD_VERSION}" >/etc/gitea-runner/version
 LABEL io.hass.version="${BUILD_VERSION}" \
     io.hass.type="addon" \
