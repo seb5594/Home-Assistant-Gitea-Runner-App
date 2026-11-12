@@ -17,15 +17,24 @@ FROM ${BUILD_FROM}
 # Alpine 3.24 currently ships different Node.js patch builds on amd64 and arm64.
 # Replaced: RUN apk add --no-cache \
 ARG TARGETARCH
-ARG NODEJS_VERSION=24.22.3-r0
-ARG NODEJS_VERSION_ARM64=24.22.1-r1
-RUN if [ "${TARGETARCH}" = arm64 ]; then NODEJS_VERSION="${NODEJS_VERSION_ARM64}"; fi; \
-    apk add --no-cache \
+# Replaced: ARG NODEJS_VERSION=24.22.3-r0
+# Replaced: ARG NODEJS_VERSION_ARM64=24.22.1-r1
+ARG BUILD_ARCH=amd64
+# Replaced: RUN if [ "${TARGETARCH}" = arm64 ]; then NODEJS_VERSION="${NODEJS_VERSION_ARM64}"; fi; \
+# Replaced: RUN apk add --no-cache \
+# Select each architecture's available Node.js patch before installing shared packages.
+RUN if [ "${TARGETARCH}" = arm64 ] || [ "${BUILD_ARCH}" = aarch64 ]; then \
+        apk add --no-cache nodejs=24.22.1-r1; \
+    else \
+        apk add --no-cache nodejs=24.22.3-r0; \
+    fi \
+    && apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/git
     git=2.54.1-r0 \
     # renovate: datasource=repology depName=alpine_3_24/nodejs
     # Replaced: nodejs=24.22.3-r0 \
-    nodejs="${NODEJS_VERSION}" \
+    # Replaced: nodejs="${NODEJS_VERSION}" \
+    # Replaced: nodejs="$(if [ "${TARGETARCH}" = arm64 ]; then printf '%s' "${NODEJS_VERSION_ARM64}"; else printf '%s' "${NODEJS_VERSION}"; fi)" \
     # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
     openssh-client-default=10.3_p1-r2 \
     # renovate: datasource=repology depName=alpine_3_24/util-linux-misc
@@ -52,7 +61,7 @@ RUN chmod a+x /usr/lib/gitea-runner/*.sh /usr/share/gitea-runner/web/cgi-bin/* \
 
 # Replaced independent app version: ARG BUILD_VERSION=1.0.0-alpha.14
 ARG BUILD_VERSION=6.0.0
-ARG BUILD_ARCH=amd64
+# Replaced: ARG BUILD_ARCH=amd64
 RUN echo "${BUILD_VERSION}" >/etc/gitea-runner/version
 LABEL io.hass.version="${BUILD_VERSION}" \
     io.hass.type="addon" \
