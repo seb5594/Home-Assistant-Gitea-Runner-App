@@ -13,11 +13,12 @@ FROM ${BUILD_FROM}
 # to other machines. util-linux-misc brings taskset, which busybox lacks and which keeps jobs on a
 # few CPU cores. busybox-extras brings the httpd of the app page, which Alpine's busybox lacks.
 # Replaced unavailable Alpine pin: git=2.54.0-r0
+# Replaced unavailable Alpine pin: nodejs=24.22.1-r1
 RUN apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/git
     git=2.54.1-r0 \
     # renovate: datasource=repology depName=alpine_3_24/nodejs
-    nodejs=24.22.1-r1 \
+    nodejs=24.22.3-r0 \
     # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
     openssh-client-default=10.3_p1-r2 \
     # renovate: datasource=repology depName=alpine_3_24/util-linux-misc
