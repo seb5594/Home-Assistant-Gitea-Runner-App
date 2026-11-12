@@ -8,7 +8,8 @@ it needs nothing but a token.
 It is built to be **small and isolated**: it has no access to Docker, the Supervisor or your files.
 Read [Safety and limits](#safety-and-limits) to see what that means for your workflows.
 
-**This is a pre-release (`dev` versions).** Expect rough edges and please report what you see.
+**This Home Assistant wrapper is experimental.** Its version matches the upstream image.
+Expect rough edges and please report what you see.
 
 ## Contents
 
@@ -206,7 +207,9 @@ for the build machine, `home-assistant` for this app), so both runners work side
 ## Updates and backups
 
 The version of the runner is the one of the Docker image `gitea/runner` that the app was built with.
-New upstream releases arrive as new versions of this app by themselves. Home Assistant backups
+Minor and patch upstream releases arrive automatically with matching app version numbers.
+Major Docker updates require Renovate Dashboard approval and manual PR merge after reviewing
+breaking changes. Home Assistant backups
 contain the registration of the runner, so a restored backup keeps its identity, but not the caches
 and workspaces, which can grow large.
 
