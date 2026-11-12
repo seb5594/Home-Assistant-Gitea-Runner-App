@@ -5,6 +5,7 @@
 * Match the app version to the pinned upstream image version (6.0.0); the packaged upstream software is unchanged.
 * Refresh the Git package pin to 2.54.1-r0 because Alpine no longer provides the previously pinned build.
 * Refresh the unavailable Node.js package pin to 24.22.3-r0 within the same major version.
+* Select the available Node.js patch per architecture: 24.22.3-r0 on amd64 and 24.22.1-r1 on aarch64.
 * Keep daily automatic updates within the current upstream major version.
 * Require Renovate Dependency Dashboard approval and manual PR merge for major Docker image updates.
 * Keep historical Alpha release notes below; the Home Assistant wrapper remains experimental.

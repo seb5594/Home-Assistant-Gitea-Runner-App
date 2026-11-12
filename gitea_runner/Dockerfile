@@ -14,11 +14,18 @@ FROM ${BUILD_FROM}
 # few CPU cores. busybox-extras brings the httpd of the app page, which Alpine's busybox lacks.
 # Replaced unavailable Alpine pin: git=2.54.0-r0
 # Replaced unavailable Alpine pin: nodejs=24.22.1-r1
-RUN apk add --no-cache \
+# Alpine 3.24 currently ships different Node.js patch builds on amd64 and arm64.
+# Replaced: RUN apk add --no-cache \
+ARG TARGETARCH
+ARG NODEJS_VERSION=24.22.3-r0
+ARG NODEJS_VERSION_ARM64=24.22.1-r1
+RUN if [ "${TARGETARCH}" = arm64 ]; then NODEJS_VERSION="${NODEJS_VERSION_ARM64}"; fi; \
+    apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/git
     git=2.54.1-r0 \
     # renovate: datasource=repology depName=alpine_3_24/nodejs
-    nodejs=24.22.3-r0 \
+    # Replaced: nodejs=24.22.3-r0 \
+    nodejs="${NODEJS_VERSION}" \
     # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
     openssh-client-default=10.3_p1-r2 \
     # renovate: datasource=repology depName=alpine_3_24/util-linux-misc
