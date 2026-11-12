@@ -12,9 +12,10 @@ FROM ${BUILD_FROM}
 # actions (actions/checkout, ...) are JavaScript, so they need node. openssh-client is for deploying
 # to other machines. util-linux-misc brings taskset, which busybox lacks and which keeps jobs on a
 # few CPU cores. busybox-extras brings the httpd of the app page, which Alpine's busybox lacks.
+# Replaced unavailable Alpine pin: git=2.54.0-r0
 RUN apk add --no-cache \
     # renovate: datasource=repology depName=alpine_3_24/git
-    git=2.54.0-r0 \
+    git=2.54.1-r0 \
     # renovate: datasource=repology depName=alpine_3_24/nodejs
     nodejs=24.22.1-r1 \
     # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
