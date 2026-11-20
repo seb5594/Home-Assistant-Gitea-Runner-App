@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/seb5594/home-assistant-base:3.24-2026.11.0@sha256:d116b9e5b612e6fcd997c86642d21b61953fcbe390c39c9b03443a577ed5e2a6
+ARG BUILD_FROM=ghcr.io/seb5594/home-assistant-base:3.24-2026.11.0
 
 # The official image only holds the static Go binary on a bare Alpine. The binary is copied
 # into the Home Assistant base image, which brings bashio and s6-overlay.
@@ -12,41 +12,14 @@ FROM ${BUILD_FROM}
 # actions (actions/checkout, ...) are JavaScript, so they need node. openssh-client is for deploying
 # to other machines. util-linux-misc brings taskset, which busybox lacks and which keeps jobs on a
 # few CPU cores. busybox-extras brings the httpd of the app page, which Alpine's busybox lacks.
-# Replaced unavailable Alpine pin: git=2.54.0-r0
-# Replaced unavailable Alpine pin: nodejs=24.22.1-r1
-# Alpine 3.24 currently ships different Node.js patch builds on amd64 and arm64.
-# Replaced: RUN apk add --no-cache \
-# Replaced: ARG TARGETARCH
-# Replaced: ARG NODEJS_VERSION=24.22.3-r0
-# Replaced: ARG NODEJS_VERSION_ARM64=24.22.1-r1
-# Replaced: ARG BUILD_ARCH=amd64
-# Replaced: RUN if [ "${TARGETARCH}" = arm64 ]; then NODEJS_VERSION="${NODEJS_VERSION_ARM64}"; fi; \
-# Replaced: RUN apk add --no-cache \
-# Select each architecture's available Node.js patch before installing shared packages.
-# Replaced: RUN if [ "${TARGETARCH}" = arm64 ] || [ "${BUILD_ARCH}" = aarch64 ]; then \
-# Replaced:     apk add --no-cache nodejs=24.22.1-r1; \
-# Replaced: else apk add --no-cache nodejs=24.22.3-r0; fi \
-# Alpine mirrors can expose the two patch builds at different times on amd64 and arm64.
-RUN if ! apk add --no-cache nodejs=24.22.3-r0; then \
-        apk add --no-cache nodejs=24.22.1-r1; \
-    fi \
-    && apk add --no-cache \
-    # renovate: datasource=repology depName=alpine_3_24/git
-    git=2.54.1-r0 \
-    # renovate: datasource=repology depName=alpine_3_24/nodejs
-    # Replaced: nodejs=24.22.3-r0 \
-    # Replaced: nodejs="${NODEJS_VERSION}" \
-    # Replaced: nodejs="$(if [ "${TARGETARCH}" = arm64 ]; then printf '%s' "${NODEJS_VERSION_ARM64}"; else printf '%s' "${NODEJS_VERSION}"; fi)" \
-    # renovate: datasource=repology depName=alpine_3_24/openssh-client-default
-    openssh-client-default=10.3_p1-r2 \
-    # renovate: datasource=repology depName=alpine_3_24/util-linux-misc
-    util-linux-misc=2.42.3-r1 \
-    # renovate: datasource=repology depName=alpine_3_24/busybox-extras
-    busybox-extras=1.37.0-r31 \
-    # renovate: datasource=repology depName=alpine_3_24/curl
-    curl=8.23.0-r0 \
-    # renovate: datasource=repology depName=alpine_3_24/jq
-    jq=1.8.2-r0
+
+RUN apk add --no-cache nodejs \
+    git \
+    openssh-client-default \
+    util-linux-misc \
+    busybox-extras \
+    curl \
+    jq
 
 COPY --from=gitea-runner /usr/local/bin/gitea-runner /usr/local/bin/gitea-runner
 RUN gitea-runner --version
@@ -61,13 +34,12 @@ RUN chmod a+x /usr/lib/gitea-runner/*.sh /usr/share/gitea-runner/web/cgi-bin/* \
     && mkdir -p /run/gitea-runner \
     && ln -s /run/gitea-runner/status.json /usr/share/gitea-runner/web/status.json
 
-# Replaced independent app version: ARG BUILD_VERSION=1.0.0-alpha.14
 ARG BUILD_VERSION=6.0.1
-ARG BUILD_ARCH=amd64
 RUN echo "${BUILD_VERSION}" >/etc/gitea-runner/version
 LABEL io.hass.version="${BUILD_VERSION}" \
     io.hass.type="addon" \
-    io.hass.arch="${BUILD_ARCH}" \
+    org.opencontainers.image.title="Home Assistant App: Gitea Runner" \
+    org.opencontainers.image.version="${BUILD_VERSION}" \
     org.opencontainers.image.source="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App"
 
 HEALTHCHECK --interval=5m --timeout=10s --start-period=1m --retries=3 \
