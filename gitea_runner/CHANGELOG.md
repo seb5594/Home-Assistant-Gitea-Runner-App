@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.1
+
+* 📦 Update gitea/runner to 6.0.1 (was 6.0.0).
+
 ## 6.0.0
 
 * Match the app version to the pinned upstream image version (6.0.0); the packaged upstream software is unchanged.

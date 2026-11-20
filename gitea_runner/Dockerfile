@@ -3,7 +3,7 @@ ARG BUILD_FROM=ghcr.io/seb5594/home-assistant-base:3.24-2026.11.0@sha256:d116b9e
 # The official image only holds the static Go binary on a bare Alpine. The binary is copied
 # into the Home Assistant base image, which brings bashio and s6-overlay.
 # renovate: datasource=docker depName=docker.io/gitea/runner
-ARG GITEA_RUNNER_VERSION=6.0.0
+ARG GITEA_RUNNER_VERSION=6.0.1
 FROM docker.io/gitea/runner:${GITEA_RUNNER_VERSION} AS gitea-runner
 
 FROM ${BUILD_FROM}
@@ -62,7 +62,7 @@ RUN chmod a+x /usr/lib/gitea-runner/*.sh /usr/share/gitea-runner/web/cgi-bin/* \
     && ln -s /run/gitea-runner/status.json /usr/share/gitea-runner/web/status.json
 
 # Replaced independent app version: ARG BUILD_VERSION=1.0.0-alpha.14
-ARG BUILD_VERSION=6.0.0
+ARG BUILD_VERSION=6.0.1
 ARG BUILD_ARCH=amd64
 RUN echo "${BUILD_VERSION}" >/etc/gitea-runner/version
 LABEL io.hass.version="${BUILD_VERSION}" \
