@@ -32,6 +32,8 @@ launch_daemon() {
 }
 
 # shellcheck disable=SC2317  # called by the TERM trap in main
+# Invoked by the TERM/INT trap below.
+# shellcheck disable=SC2329
 stop_daemon() {
   if [[ -n "$DAEMON_PID" ]]; then
     kill "$DAEMON_PID" 2>/dev/null || true
