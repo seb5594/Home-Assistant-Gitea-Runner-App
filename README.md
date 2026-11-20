@@ -6,7 +6,7 @@
 <p align="center">
   <a href="https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fseb5594%2FHome-Assistant-Apps"><img src="https://img.shields.io/static/v1?label=Home%20Assistant&amp;message=Add%20app%20repository&amp;color=18BCF2&amp;logo=homeassistant&amp;logoColor=white&amp;style=for-the-badge" alt="Home Assistant" height="28"></a><br>
   <a href="https://github.com/seb5594/Home-Assistant-Gitea-Runner-App/releases/tag/v6.0.1"><img src="https://img.shields.io/static/v1?label=app%20version&amp;message=6.0.1&amp;color=1877A5&amp;style=for-the-badge" alt="app version" height="28"></a>
-  <img src="https://img.shields.io/static/v1?label=image%20pulls&amp;message=4&amp;color=1877A5&amp;style=for-the-badge" alt="image pulls" height="28"><br>
+  <img src="https://img.shields.io/static/v1?label=image%20pulls&amp;message=5&amp;color=1877A5&amp;style=for-the-badge" alt="image pulls" height="28"><br>
   <img src="https://img.shields.io/static/v1?label=stage&amp;message=experimental&amp;color=2F855A&amp;style=flat" alt="stage" height="20">
   <img src="https://img.shields.io/static/v1?label=ingress&amp;message=enabled&amp;color=7C3AED&amp;style=flat" alt="ingress" height="20">
   <img src="https://img.shields.io/static/v1?label=arch%20%26%20size&amp;message=amd64%2053.0%20%C2%B7%20aarch64%2052.0%20MiB&amp;color=157F71&amp;style=flat" alt="arch &amp; size" height="20">
